@@ -1,0 +1,17 @@
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\bin\Debug\net6.0\RR.Services.deps.json
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\bin\Debug\net6.0\RR.Services.dll
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\bin\Debug\net6.0\RR.Services.pdb
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\bin\Debug\net6.0\RR.DataBaseConnect.dll
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\bin\Debug\net6.0\RR.Models.dll
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\bin\Debug\net6.0\RR.DataBaseConnect.pdb
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\bin\Debug\net6.0\RR.Models.pdb
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.csproj.AssemblyReference.cache
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.AssemblyInfoInputs.cache
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.AssemblyInfo.cs
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.csproj.CoreCompileInputs.cache
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.csproj.CopyComplete
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.dll
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\refint\RR.Services.dll
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\RR.Services.pdb
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Services\obj\Debug\net6.0\ref\RR.Services.dll

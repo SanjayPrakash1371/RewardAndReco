@@ -1,0 +1,140 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RR.DataBaseConnect;
+using RR.Models.EmployeeInfo;
+using RR.Services.RequestClasses;
+
+namespace RR.Services
+{
+    public class EmployeeServices
+    {
+        private readonly DataBaseAccess dataBaseAccess;
+
+        public EmployeeServices()
+        {
+
+        }
+
+        public EmployeeServices(DataBaseAccess dataBaseAccess)
+        {
+            this.dataBaseAccess = dataBaseAccess;
+        }
+
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeeAsync()
+        {
+            var result = await dataBaseAccess.Employee.ToListAsync();
+
+            result.ForEach(employee =>
+            {
+                // employee.UsernamePassword = allDataAccess.usernamepassword.FirstOrDefault(x => x.employeeId == employee.EmployeeId);
+                employee.Roles = dataBaseAccess.EmployeeRoles.Where(x => x.EmpId== employee.EmployeeId).ToList();
+               
+
+
+            });
+
+
+
+            /*var query = (from a in allDataAccess.Employees  join b in allDataAccess.EmployeesRoles on a.EmployeeId equals b.empId 
+                        select  new { a.Name,a.designation,b.rolename}).ToList();*/
+
+            /*return  allDataAccess.Employees.Include(x=>x.Roles).Select(x=> new
+             {
+                 Name=x.Name,
+                 Roles=x.Roles,
+
+             }).ToList();*/
+
+            return result;
+        }
+
+        public async Task<ActionResult<Employee>> AddEmployee(RequestEmployee requestEmployee)
+        {
+            Employee employee = new Employee();
+            employee.EmployeeId = requestEmployee.EmployeeId;
+
+            employee.Name = requestEmployee.Name;
+           // employee.EmailId = requestEmployee.EmailId;
+          //  employee.Password = requestEmployee.Password;
+            employee.Designation = requestEmployee.Designation;
+
+
+            UserNamePassword UserNamePassword = new UserNamePassword();
+          
+            UserNamePassword.EmailID = requestEmployee.EmailId;
+            UserNamePassword.Password = requestEmployee.Password;
+            UserNamePassword.employeeId = requestEmployee.EmployeeId;
+            employee.UserNamePassword = UserNamePassword;
+
+
+
+            foreach (var roleID in requestEmployee.Roles)
+            {
+                EmployeeRoles employeeRole = new EmployeeRoles();
+
+
+                employeeRole.IdOfRole = roleID;
+
+                employeeRole.role = await dataBaseAccess.Roles.FindAsync(roleID);
+
+                employeeRole.RoleName = employeeRole.role.RoleName;
+
+                employeeRole.EmpId = requestEmployee.EmployeeId;
+                
+                await dataBaseAccess.EmployeeRoles.AddAsync(employeeRole);
+
+
+            }
+            await dataBaseAccess.Employee.AddAsync(employee);
+
+            await dataBaseAccess.SaveChangesAsync();
+
+            return employee;
+        }
+
+        // getAll Roles
+
+        public async Task<ActionResult<IEnumerable<EmployeeRoles>>> getAllEmpRoles()
+        {
+            return await dataBaseAccess.EmployeeRoles.ToListAsync();
+        }
+
+        // add Role to the employee
+
+        public async Task<ActionResult<EmployeeRoles>> addRoleToEmployee(RequestRole requestrole)
+        {
+
+
+            EmployeeRoles employeeRoles = new EmployeeRoles();
+
+            employeeRoles.IdOfRole = requestrole.rId;
+            employeeRoles.EmpId = requestrole.employeeId;
+            employeeRoles.role = await dataBaseAccess.Roles.FindAsync(employeeRoles.IdOfRole);
+            employeeRoles.RoleName= employeeRoles.role.RoleName;
+
+            await dataBaseAccess.EmployeeRoles.AddAsync(employeeRoles);
+
+            await dataBaseAccess.SaveChangesAsync();
+
+            return employeeRoles;
+        }
+
+        public async Task<ActionResult<EmployeeRoles>> deleteRole(string empId , int roleId)
+        {
+            EmployeeRoles employeeRoles=await dataBaseAccess.EmployeeRoles.FirstOrDefaultAsync(x=>x.IdOfRole==roleId &&  x.EmpId.Equals(empId));
+
+            if(employeeRoles==null)
+            {
+                return null;
+            }
+            else
+            {
+                 dataBaseAccess.EmployeeRoles.Remove(employeeRoles);
+               await  dataBaseAccess.SaveChangesAsync();
+
+                return employeeRoles;
+            }
+        }
+
+    }
+}
