@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "trPzShVkTQN6y6bweWGv64McsWFCISIuGlxnEfyx/mqqK1xYkkOuOWWu+wIiUxx2TaARRK6KQGx/BLwyhjrYjg==",
+  "dgSpecHash": "SAw0wKbeQ6nA9PIaYBY3WOhnnJwipR2vBQkwrDHJBz8QvgnkV5AMBHd6nwuLr0mcxOeTaYWDjnFN1R1na5MmnA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Sanjayprakash.S\\Documents\\Sunday\\RR.Services\\RR.Services.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
     "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",

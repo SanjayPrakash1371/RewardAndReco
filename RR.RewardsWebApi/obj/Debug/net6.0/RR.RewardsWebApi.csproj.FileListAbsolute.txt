@@ -91,3 +91,5 @@ C:\Users\Sanjayprakash.S\Documents\Sunday\RR.RewardsWebApi\obj\Debug\net6.0\refi
 C:\Users\Sanjayprakash.S\Documents\Sunday\RR.RewardsWebApi\obj\Debug\net6.0\RR.RewardsWebApi.pdb
 C:\Users\Sanjayprakash.S\Documents\Sunday\RR.RewardsWebApi\obj\Debug\net6.0\RR.RewardsWebApi.genruntimeconfig.cache
 C:\Users\Sanjayprakash.S\Documents\Sunday\RR.RewardsWebApi\obj\Debug\net6.0\ref\RR.RewardsWebApi.dll
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.RewardsWebApi\bin\Debug\net6.0\BCrypt.Net-Next.dll
+C:\Users\Sanjayprakash.S\Documents\Sunday\RR.RewardsWebApi\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

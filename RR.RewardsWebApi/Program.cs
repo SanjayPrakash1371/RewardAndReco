@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RR.DataBaseConnect;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,29 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//
+
+
+
+builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
+
+{
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+
+        ValidateAudience = false,
+
+        ValidateIssuer = false,
+
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(
+         builder.Configuration.GetSection("AppSettings:Token").Value!))
+
+
+    };
+
+});
 
 builder.Services.AddDbContext<DataBaseAccess>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
@@ -22,6 +47,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

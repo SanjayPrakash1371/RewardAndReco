@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RR.DataBaseConnect;
 using RR.Models.EmployeeInfo;
 using RR.Services;
@@ -8,6 +9,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class EmployeeController : ControllerBase
     {
         public EmployeeServices employeeServices;
@@ -18,7 +20,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
         }
 
         [HttpGet]
-
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         {
 
@@ -56,6 +58,15 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
 
             return Ok(result.Value);
         }
+        /*[HttpDelete]
+        [Route("{EmployeeId}")]
+
+        public async Task<ActionResult<Employee>> deleteEmployee([FromRoute] string EmployeeId)
+        {
+           var result= await employeeServices.deleteEmployee(EmployeeId);
+            return result.Value;
+
+        }*/
     } 
 }
 

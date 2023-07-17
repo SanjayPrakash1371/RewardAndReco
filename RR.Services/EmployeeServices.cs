@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BCrypt.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RR.DataBaseConnect;
 using RR.Models.EmployeeInfo;
@@ -62,7 +63,10 @@ namespace RR.Services
             UserNamePassword UserNamePassword = new UserNamePassword();
           
             UserNamePassword.EmailID = requestEmployee.EmailId;
-            UserNamePassword.Password = requestEmployee.Password;
+            string passwordHash =
+             BCrypt.Net.BCrypt.HashPassword(requestEmployee.Password);
+            UserNamePassword.Password = passwordHash;
+           // UserNamePassword.Password = requestEmployee.Password;
             UserNamePassword.employeeId = requestEmployee.EmployeeId;
             employee.UserNamePassword = UserNamePassword;
 
@@ -109,8 +113,14 @@ namespace RR.Services
             UserNamePassword UserNamePassword = await dataBaseAccess.UserNamePassword.FirstOrDefaultAsync(x => x.employeeId.Equals(requestEmployee.EmployeeId));
 
             UserNamePassword.EmailID = requestEmployee.EmailId;
-            UserNamePassword.Password = requestEmployee.Password;
+
+            string passwordHash =
+             BCrypt.Net.BCrypt.HashPassword(requestEmployee.Password);
+            UserNamePassword.Password = passwordHash;
+
+
             UserNamePassword.employeeId = requestEmployee.EmployeeId;
+
             employee.UserNamePassword = UserNamePassword;
 
             List<EmployeeRoles> roles = await dataBaseAccess.EmployeeRoles.Where(x => x.EmpId == requestEmployee.EmployeeId).ToListAsync();
@@ -207,6 +217,26 @@ namespace RR.Services
                 return employeeRoles;
             }
         }
+
+        // delete Employee
+        public async Task<ActionResult<Employee>> deleteEmployee(string employeeId)
+        {
+            Employee employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(x=>x.EmployeeId.Equals(employeeId));   
+
+
+            if (employee == null)
+            {
+                return null;
+            }
+            else
+            {
+                dataBaseAccess.Employee.Remove(employee);
+                await dataBaseAccess.SaveChangesAsync();
+
+                return employee;
+            }
+        }
+
 
     }
 }
