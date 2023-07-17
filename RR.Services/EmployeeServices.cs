@@ -80,6 +80,7 @@ namespace RR.Services
                 employeeRole.RoleName = employeeRole.role.RoleName;
 
                 employeeRole.EmpId = requestEmployee.EmployeeId;
+                employeeRole.EmployeeId=requestEmployee.EmployeeId;
                 
                 await dataBaseAccess.EmployeeRoles.AddAsync(employeeRole);
 
@@ -91,7 +92,78 @@ namespace RR.Services
 
             return employee;
         }
+        // update Employee 
 
+        public async Task<ActionResult<Employee>> updateEmployee(RequestEmployee requestEmployee)
+        {
+
+            Employee employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(x=>x.EmployeeId==requestEmployee.EmployeeId);
+            employee.EmployeeId = requestEmployee.EmployeeId;
+
+            employee.Name = requestEmployee.Name;
+            // employee.EmailId = requestEmployee.EmailId;
+            //  employee.Password = requestEmployee.Password;
+            employee.Designation = requestEmployee.Designation;
+
+
+            UserNamePassword UserNamePassword = await dataBaseAccess.UserNamePassword.FirstOrDefaultAsync(x => x.employeeId.Equals(requestEmployee.EmployeeId));
+
+            UserNamePassword.EmailID = requestEmployee.EmailId;
+            UserNamePassword.Password = requestEmployee.Password;
+            UserNamePassword.employeeId = requestEmployee.EmployeeId;
+            employee.UserNamePassword = UserNamePassword;
+
+            List<EmployeeRoles> roles = await dataBaseAccess.EmployeeRoles.Where(x => x.EmpId == requestEmployee.EmployeeId).ToListAsync();
+            List<EmployeeRoles> deleteRolesNotGivenByTheUser= new List<EmployeeRoles>();
+
+            
+            // FOr checking the exisiting and matched role
+            foreach (EmployeeRoles role in roles)
+            {
+                if(requestEmployee.Roles.Contains(role.IdOfRole))
+                {
+                    
+                
+                    requestEmployee.Roles.Remove(role.IdOfRole);
+
+                }
+                else
+                {
+                    deleteRolesNotGivenByTheUser.Add(role);
+                }
+                
+            }
+
+            // For removing the roles specified by the admin 
+            foreach(EmployeeRoles employeeRoles in deleteRolesNotGivenByTheUser)
+            {
+                EmployeeRoles employeeRoles1 = employeeRoles;
+                  dataBaseAccess.EmployeeRoles.Remove(employeeRoles1);
+
+                await dataBaseAccess.SaveChangesAsync();
+            }
+            // Add the new  role
+            foreach(var role in requestEmployee.Roles)
+            {
+                EmployeeRoles employeeRole = new EmployeeRoles();
+                employeeRole.IdOfRole = role;
+
+                employeeRole.role = await dataBaseAccess.Roles.FindAsync(role);
+
+                employeeRole.RoleName = employeeRole.role.RoleName;
+
+                employeeRole.EmpId = requestEmployee.EmployeeId;
+                employeeRole.EmployeeId = requestEmployee.EmployeeId;
+
+                await dataBaseAccess.EmployeeRoles.AddAsync(employeeRole);
+            }
+            await dataBaseAccess.SaveChangesAsync();
+
+            return employee;
+
+
+
+        }
         // getAll Roles
 
         public async Task<ActionResult<IEnumerable<EmployeeRoles>>> getAllEmpRoles()

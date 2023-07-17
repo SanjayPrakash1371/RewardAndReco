@@ -49,6 +49,13 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
 
             return Ok(result.Value);
         }
+        [HttpPut]
+        public async Task<ActionResult<Employee>> updateEmployee(RequestEmployee requestEmployee)
+        {
+            var result = await employeeServices.updateEmployee(requestEmployee);
+
+            return Ok(result.Value);
+        }
     } 
 }
 

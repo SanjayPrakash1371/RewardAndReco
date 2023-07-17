@@ -63,8 +63,11 @@ namespace RR.Services
             awardCategory.Name = requestAward.Name;
             awardCategory.IdOfReward = requestAward.IdOfReward;
 
+
+
             awardCategory.RewardType = await dataBaseAccess.RewardType.FirstOrDefaultAsync(x => x.Id == requestAward.IdOfReward);
 
+            
             await dataBaseAccess.AwardCategory.AddAsync(awardCategory);
 
             await dataBaseAccess.SaveChangesAsync();

@@ -67,7 +67,11 @@ namespace RR.DataBaseConnect.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EmployeeId")
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EmployeeId1")
                         .HasColumnType("int");
 
                     b.Property<int>("IdOfRole")
@@ -82,7 +86,7 @@ namespace RR.DataBaseConnect.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId1");
 
                     b.HasIndex("RoleId");
 
@@ -465,7 +469,7 @@ namespace RR.DataBaseConnect.Migrations
                 {
                     b.HasOne("RR.Models.EmployeeInfo.Employee", null)
                         .WithMany("Roles")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId1");
 
                     b.HasOne("RR.Models.EmployeeInfo.Roles", "role")
                         .WithMany()

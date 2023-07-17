@@ -31,7 +31,8 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
             var results = (from l in dataBaseAccess.OtherRewardResults where l.CampaignId == CampaignId
                            group l by l.NomineeId into g
-                           select new { EmployeeId = g.First().NomineeId, Stars = g.Sum(s => s.Stars) / g.ToList().Count() }).Take(Count);
+                           select new { EmployeeId = g.First().NomineeId, Stars = g.Sum(s => s.Stars) / g.ToList().Count(),
+                               Award=g.First().AwardCategory}).Take(Count);
 
 
             return Ok(results);
