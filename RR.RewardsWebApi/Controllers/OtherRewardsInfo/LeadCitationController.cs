@@ -76,21 +76,46 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
             return Ok(query);*/
 
-            var result= await dataBaseAccess.LeadCitation.Include(x=>x.LeadCitationReplies)
-                .Where(x=>x.NominatorId.Equals(NominatorId)&&x.Campaigns.Id==CampaignId).ToListAsync();
+            
+               
+            
 
-            return Ok(result.Select(x => new
+            if (IsAvailableNominatorId(NominatorId) )
             {
-                NominatorId = x.NominatorId,
+                var result = await dataBaseAccess.LeadCitation.Include(x => x.LeadCitationReplies)
+                .Where(x => x.NominatorId.Equals(NominatorId) && x.Campaigns.Id == CampaignId).ToListAsync();
 
-                Replies = x.LeadCitationReplies.Select(y => new
+                return Ok(result.Select(x => new
                 {
-                    ReplierId = y.ReplierId,
-                    Reply = y.ReplyCitation
-                })
-            })) ;
-             
+                    NominatorId = x.NominatorId,
 
+                    Replies = x.LeadCitationReplies.Select(y => new
+                    {
+                        ReplierId = y.ReplierId,
+                        Reply = y.ReplyCitation
+                    })
+                }));
+            }
+            else
+            {
+                return BadRequest("You Have Nominated NoOne");
+            }
+
+
+
+        }
+
+        private bool IsAvailableNominatorId(string NominatorId)
+        {
+            var res = dataBaseAccess.LeadCitation.FirstOrDefault(x => x.NominatorId.Equals(NominatorId));
+            if (res != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
     }

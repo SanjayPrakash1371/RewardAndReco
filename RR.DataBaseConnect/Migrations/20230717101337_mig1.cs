@@ -5,7 +5,7 @@
 namespace RR.DataBaseConnect.Migrations
 {
     /// <inheritdoc />
-    public partial class Sunday1 : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,6 +49,26 @@ namespace RR.DataBaseConnect.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserNamePassword", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AwardCategory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdOfReward = table.Column<int>(type: "int", nullable: false),
+                    RewardId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AwardCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AwardCategory_RewardType_RewardId",
+                        column: x => x.RewardId,
+                        principalTable: "RewardType",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -124,16 +144,17 @@ namespace RR.DataBaseConnect.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmpId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdOfRole = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: true)
+                    EmployeeId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmployeeRoles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmployeeRoles_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_EmployeeRoles_Employee_EmployeeId1",
+                        column: x => x.EmployeeId1,
                         principalTable: "Employee",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -308,6 +329,11 @@ namespace RR.DataBaseConnect.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AwardCategory_RewardId",
+                table: "AwardCategory",
+                column: "RewardId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Campaigns_RewardTypesId",
                 table: "Campaigns",
                 column: "RewardTypesId");
@@ -324,9 +350,9 @@ namespace RR.DataBaseConnect.Migrations
                 column: "UserPassId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeRoles_EmployeeId",
+                name: "IX_EmployeeRoles_EmployeeId1",
                 table: "EmployeeRoles",
-                column: "EmployeeId");
+                column: "EmployeeId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeRoles_RoleId",
@@ -402,6 +428,9 @@ namespace RR.DataBaseConnect.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AwardCategory");
+
             migrationBuilder.DropTable(
                 name: "EmployeeRoles");
 

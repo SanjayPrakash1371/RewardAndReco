@@ -14,6 +14,7 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
         public PeerToPeerServices PeerToPeerServices;
         public PeerToPeerController(DataBaseAccess dataBaseAccess)
         {
+            this.dataBaseAccess = dataBaseAccess;
             PeerToPeerServices = new PeerToPeerServices(dataBaseAccess);
         }
 
@@ -34,11 +35,19 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 
         public async Task<ActionResult<PeerToPeer>> Get([FromRoute] string NominatorId)
         {
-            
+
+
+            if (IsAvailableNominatorId(NominatorId))
+            {
                 var result = await PeerToPeerServices.Get(NominatorId);
                 return Ok(result);
-            
-           
+            }
+            else
+            {
+                return BadRequest("You Have Nominated NoOne");
+            }
+
+
 
         }
 
@@ -59,11 +68,19 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 
         }
 
-        /* public bool IsAvailableNominatorId(string NominatorId)
-         {
-             return (dataBaseAccess.PeerToPeer?.Any(x => x.NominatorId.Equals(NominatorId))).GetValueOrDefault();
+        private bool IsAvailableNominatorId(string NominatorId)
+        {
+            var res = dataBaseAccess.PeerToPeer.FirstOrDefault(x => x.NominatorId.Equals(NominatorId));
+            if (res != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
-         }*/
+        }
 
         [HttpPut]
         public async   Task<ActionResult<PeerToPeer>> EditNomination(RequestPeerToPeer requestPeerToPeer)

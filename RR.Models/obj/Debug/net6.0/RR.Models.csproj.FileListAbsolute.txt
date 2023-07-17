@@ -10,3 +10,15 @@ C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Models\obj\Debug\net6.0\RR.Models.d
 C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Models\obj\Debug\net6.0\refint\RR.Models.dll
 C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Models\obj\Debug\net6.0\RR.Models.pdb
 C:\Users\Sanjayprakash.S\Documents\Sunday\RR.Models\obj\Debug\net6.0\ref\RR.Models.dll
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\bin\Debug\net6.0\RR.Models.deps.json
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\bin\Debug\net6.0\RR.Models.dll
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\bin\Debug\net6.0\RR.Models.pdb
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\RR.Models.csproj.AssemblyReference.cache
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\RR.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\RR.Models.AssemblyInfoInputs.cache
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\RR.Models.AssemblyInfo.cs
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\RR.Models.csproj.CoreCompileInputs.cache
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\RR.Models.dll
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\refint\RR.Models.dll
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\RR.Models.pdb
+C:\Lavanya\CapstoneNAF\RR_Monday\RR.Models\obj\Debug\net6.0\ref\RR.Models.dll

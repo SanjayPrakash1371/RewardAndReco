@@ -12,8 +12,8 @@ using RR.DataBaseConnect;
 namespace RR.DataBaseConnect.Migrations
 {
     [DbContext(typeof(DataBaseAccess))]
-    [Migration("20230716130709_Sunday1")]
-    partial class Sunday1
+    [Migration("20230717101337_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,11 @@ namespace RR.DataBaseConnect.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EmployeeId")
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EmployeeId1")
                         .HasColumnType("int");
 
                     b.Property<int>("IdOfRole")
@@ -85,7 +89,7 @@ namespace RR.DataBaseConnect.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId1");
 
                     b.HasIndex("RoleId");
 
@@ -374,6 +378,31 @@ namespace RR.DataBaseConnect.Migrations
                     b.ToTable("PeerToPeerResults");
                 });
 
+            modelBuilder.Entity("RR.Models.Rewards_Campaigns.AwardCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdOfReward")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RewardId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RewardId");
+
+                    b.ToTable("AwardCategory");
+                });
+
             modelBuilder.Entity("RR.Models.Rewards_Campaigns.Campaigns", b =>
                 {
                     b.Property<int>("Id")
@@ -443,7 +472,7 @@ namespace RR.DataBaseConnect.Migrations
                 {
                     b.HasOne("RR.Models.EmployeeInfo.Employee", null)
                         .WithMany("Roles")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId1");
 
                     b.HasOne("RR.Models.EmployeeInfo.Roles", "role")
                         .WithMany()
@@ -556,6 +585,15 @@ namespace RR.DataBaseConnect.Migrations
                         .HasForeignKey("IdOfNominee");
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("RR.Models.Rewards_Campaigns.AwardCategory", b =>
+                {
+                    b.HasOne("RR.Models.Rewards_Campaigns.RewardType", "RewardType")
+                        .WithMany()
+                        .HasForeignKey("RewardId");
+
+                    b.Navigation("RewardType");
                 });
 
             modelBuilder.Entity("RR.Models.Rewards_Campaigns.Campaigns", b =>
