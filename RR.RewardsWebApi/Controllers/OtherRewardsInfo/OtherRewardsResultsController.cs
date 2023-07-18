@@ -27,7 +27,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
         public async Task<ActionResult<IEnumerable<OtherRewardResults>>> GetResult([FromRoute] int CampaignId, int Count)
         {
 
-           
+
 
             /*var results = (from l in dataBaseAccess.OtherRewardResults where l.CampaignId == CampaignId
                            group l by l.NomineeId into g
@@ -38,10 +38,10 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
                 GroupBy(x => x.NomineeId).Select(s => new
                 {
                     NomineeId = s.First().NomineeId,
-                    Stars=s.Sum(sum=>sum.Stars)/s.ToList().Count(),
-                    AwardC=s.AsEnumerable().First().AwardCategory,
-                 
-                });
+                    Stars = s.Sum(sum => sum.Stars) / s.ToList().Count(),
+                   /* AwardC= s.App*/
+
+                }) ;
             return Ok(arr);
 
 

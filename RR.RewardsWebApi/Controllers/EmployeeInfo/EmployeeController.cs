@@ -33,6 +33,9 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
             {
                 name = x.Name,
                 EmployeeId = x.EmployeeId,
+                Designation=x.Designation,
+                email=x.UserNamePassword.EmailID,
+                Password = x.UserNamePassword.Password,
                 Roles = x.Roles.Select(y => new
                 {
                     roleId = y.IdOfRole,

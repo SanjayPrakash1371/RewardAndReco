@@ -56,6 +56,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
             return Ok(res.Value.Select(x => new
             {
                 Campaigns = x.Campaigns.CampaignName,
+                CampaignId = x.CampaignId,
                 RewardType = x.Campaigns.RewardTypes.RewardTypes,
                 startDate = x.Campaigns.StartDate,
                 endDate = x.Campaigns.EndDate,
@@ -66,6 +67,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
                 Designation = x.Employee.Designation,
                 Month = x.Month,
                 AwardCategory = x.AwardCategory,
+                CitationId=x.LeadCitation.Id,
                 Citation = x.LeadCitation.Citation,
                 Reply = x.LeadCitation.LeadCitationReplies.Select(y => new
                 {
