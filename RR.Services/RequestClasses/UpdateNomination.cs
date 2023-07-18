@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace RR.Services.RequestClasses
 {
-    public class RequestOtherRewards
+    public class UpdateNomination
     {
+        public int otherRewardsId { get; set; }
         public int CampaignId { get; set; }
 
         public string NominatorId { get; set; }
@@ -16,7 +17,7 @@ namespace RR.Services.RequestClasses
 
         public string AwardCategory { get; set; }
 
-
+        public int leadCitationId { get; set; }
 
         public int Month { get; set; }
 

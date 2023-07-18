@@ -4,6 +4,7 @@ using RR.Models.PeerToPeerInfo;
 using RR.Models.Rewards_Campaigns;
 using RR.Services;
 using RR.Services.RequestClasses;
+using System.Diagnostics.Eventing.Reader;
 
 namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 {
@@ -23,52 +24,95 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 
         [HttpGet]
         [Route("{CampaignId:int}")]
-        
+
 
         public async Task<ActionResult<IEnumerable<PeerToPeer>>> GetPeerToPeer([FromRoute] int CampaignId)
         {
-           
 
-            var res = await PeerToPeerServices.GetPeerToPeerAsync(CampaignId);
-            // return Ok(res);
+              var res = await PeerToPeerServices.GetPeerToPeerAsync(CampaignId);
 
-
-            return Ok(res.Value.Select(x => new
+            if (res != null)
             {
-                Campaigns = x.Campaigns.CampaignName,
-                RewardType=x.Campaigns.RewardTypes.RewardTypes,
-                startDate = x.Campaigns.StartDate,
-                endDate = x.Campaigns.EndDate,
-                NomainatorId = x.NominatorId,
-                NominatorName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(x.NominatorId)).Name,
-                NomineeName = x.Employee.Name,
-                NomineeId = x.NomineeId,
-                Designation = x.Employee.Designation,
-                Month = x.Month,
-                AwardCategory = x.AwardCategory,
-                Citation = x.Citation,
-               
+                // return Ok(res);
+
+
+                return Ok(res.Value.Select(x => new
+                {
+                    Campaigns = x.Campaigns.CampaignName,
+                    RewardType = x.Campaigns.RewardTypes.RewardTypes,
+                    startDate = x.Campaigns.StartDate,
+                    endDate = x.Campaigns.EndDate,
+                    NomainatorId = x.NominatorId,
+                    NominatorName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(x.NominatorId)).Name,
+                    NomineeName = x.Employee.Name,
+                    NomineeId = x.NomineeId,
+                    Designation = x.Employee.Designation,
+                    Month = x.Month,
+                    AwardCategory = x.AwardCategory,
+                    Citation = x.Citation,
 
 
 
 
-            }));
 
+                }));
+            }
+            else
+            {
+                return BadRequest("No one has Nominated still...");
+            }
+
+            
+
+          
         }
-/*
-        [HttpGet]
-        [Route("{NomineeId}")]
 
-        public async Task<ActionResult<PeerToPeer>> Get([FromRoute] string NomineeId)
+
+        /*public bool isAvailable(int CampaignId)
         {
-            
-                var result = await PeerToPeerServices.Get(NomineeId);
-                return Ok(result);
-            
-           
+            var res = dataBaseAccess.PeerToPeer.Find(CampaignId);
+            if(res!= null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }*/
 
-        }
-*/
+
+       /* public bool IsAvailable(int CampaignId)
+        {
+
+            var res = dataBaseAccess.PeerToPeer.FirstOrDefault(x => x.CampaignId.Equals(CampaignId));
+            if (res != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            // return (dataBaseAccess.PeerToPeer?.Any(x => x.CampaignId.Equals(CampaignId))).GetValueOrDefault();
+
+        }*/
+
+
+        /*
+                [HttpGet]
+                [Route("{NomineeId}")]
+
+                public async Task<ActionResult<PeerToPeer>> Get([FromRoute] string NomineeId)
+                {
+
+                        var result = await PeerToPeerServices.Get(NomineeId);
+                        return Ok(result);
+
+
+
+                }
+        */
 
 
         [HttpPost]
