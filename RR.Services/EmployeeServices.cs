@@ -23,13 +23,15 @@ namespace RR.Services
 
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeeAsync()
         {
-            var result = await dataBaseAccess.Employee.ToListAsync();
+           /* var result = await dataBaseAccess.Employee.ToListAsync();*/
+
+            var result = await dataBaseAccess.Employee.Include(x => x.UserNamePassword).Include(x => x.Roles).ToListAsync();
 
             result.ForEach(employee =>
             {
                 // employee.UsernamePassword = allDataAccess.usernamepassword.FirstOrDefault(x => x.employeeId == employee.EmployeeId);
-                employee.Roles = dataBaseAccess.EmployeeRoles.Where(x => x.EmpId== employee.EmployeeId).ToList();
-               
+                employee.Roles = dataBaseAccess.EmployeeRoles.Where(x => x.EmpId == employee.EmployeeId).ToList();
+
 
 
             });

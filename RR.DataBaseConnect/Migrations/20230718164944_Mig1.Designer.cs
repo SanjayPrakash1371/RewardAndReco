@@ -12,8 +12,8 @@ using RR.DataBaseConnect;
 namespace RR.DataBaseConnect.Migrations
 {
     [DbContext(typeof(DataBaseAccess))]
-    [Migration("20230718122725_Initial")]
-    partial class Initial
+    [Migration("20230718164944_Mig1")]
+    partial class Mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

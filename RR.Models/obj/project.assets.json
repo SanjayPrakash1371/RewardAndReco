@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\": {}
+    "C:\\Users\\Lavanya.T\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sanjayprakash.S\\Documents\\Sunday\\RR.Models\\RR.Models.csproj",
+      "projectUniqueName": "C:\\Lavanya\\CapstoneNAF\\RR_Tuesday\\RR.Models\\RR.Models.csproj",
       "projectName": "RR.Models",
-      "projectPath": "C:\\Users\\Sanjayprakash.S\\Documents\\Sunday\\RR.Models\\RR.Models.csproj",
-      "packagesPath": "C:\\Users\\Sanjayprakash.S\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sanjayprakash.S\\Documents\\Sunday\\RR.Models\\obj\\",
+      "projectPath": "C:\\Lavanya\\CapstoneNAF\\RR_Tuesday\\RR.Models\\RR.Models.csproj",
+      "packagesPath": "C:\\Users\\Lavanya.T\\.nuget\\packages\\",
+      "outputPath": "C:\\Lavanya\\CapstoneNAF\\RR_Tuesday\\RR.Models\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Sanjayprakash.S\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Lavanya.T\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -61,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
       }
     }
   }
