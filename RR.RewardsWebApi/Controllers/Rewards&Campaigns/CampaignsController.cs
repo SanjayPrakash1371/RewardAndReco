@@ -8,9 +8,9 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CampaignsController:ControllerBase
+    public class CampaignsController : ControllerBase
     {
-        
+
         public CampaignServices CampaignServices;
 
         public CampaignsController(DataBaseAccess dataBaseAccess)
@@ -33,7 +33,28 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
         {
 
             var res = await CampaignServices.AddCampaign(requestCampaign);
-            return Ok(res);
+            return Ok(res.Value);
         }
+        [HttpPut]
+        public async Task<ActionResult<Campaigns>> editCampaings(RequestUpdateCampaign requestUpdateCampaign)
+        {
+            var res = await CampaignServices.updateCampaign(requestUpdateCampaign);
+            return Ok(res.Value);
+        }
+
+
+
+
+
+
+
+       /* [HttpGet]
+        [Route("{campId}/{rewardId}")]
+        public async Task<IActionResult> getCampaignsDetails([FromRoute] int campId, int rewardId)
+        {
+            var result = await CampaignServices.getCampaignDetailsByCampId(campId, rewardId);
+
+            return Ok(result);
+        }*/
     }
 }

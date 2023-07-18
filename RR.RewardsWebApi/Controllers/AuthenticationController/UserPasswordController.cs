@@ -28,13 +28,18 @@ namespace RR.RewardsWebApi.Controllers.AuthenticationController
             this.configuration = configuration;
         }
 
-        [HttpPost(Name = "login")]
+        [HttpPost]
+        [Route("login")]
         public async Task<ActionResult<LoginResponse>> login(RequestUserIdAndPassword requestUserIdAndPassword)
         {
+            
             UserNamePassword userNamePassword = await dataBaseAccess.UserNamePassword
                 .FirstOrDefaultAsync(x => x.EmailID.Equals(requestUserIdAndPassword.EmailID));
 
-
+            if(userNamePassword == null)
+            {
+                return BadRequest("Null");
+            }
             if (userNamePassword.EmailID != requestUserIdAndPassword.EmailID)
             {
                 return BadRequest("UserId not FOund");
@@ -50,8 +55,10 @@ namespace RR.RewardsWebApi.Controllers.AuthenticationController
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.employeeId=userNamePassword.employeeId;
             loginResponse.roles = roles;
+            /*loginResponse.roles.Select(x =>  { Id = x.IdOfRole, Name = x.RoleName });*/
 
             loginResponse.Token = token;
+
 
 
 

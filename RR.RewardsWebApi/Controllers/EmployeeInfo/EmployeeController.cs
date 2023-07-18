@@ -20,7 +20,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Moderator")]
+       /* [Authorize(Roles = "Admin,Moderator")]*/
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         {
 
@@ -49,12 +49,17 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
         {
             var result = await employeeServices.AddEmployee(requestEmployee);
 
-            return Ok(result.Value);
+            return Ok(result.Value.Name+" Added");
         }
         [HttpPut]
         public async Task<ActionResult<Employee>> updateEmployee(RequestEmployee requestEmployee)
         {
             var result = await employeeServices.updateEmployee(requestEmployee);
+
+            if(result==null)
+            {
+                return BadRequest("EmpId not Exist");
+            }
 
             return Ok(result.Value);
         }

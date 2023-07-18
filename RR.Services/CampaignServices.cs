@@ -14,7 +14,7 @@ namespace RR.Services
     public class CampaignServices
     {
         private readonly DataBaseAccess dataBaseAccess;
-
+        public PeerToPeerServices PeerToPeerServices { get; set; }
         public CampaignServices()
         {
 
@@ -23,12 +23,16 @@ namespace RR.Services
         public CampaignServices(DataBaseAccess dataBaseAccess)
         {
             this.dataBaseAccess = dataBaseAccess;
+            this.PeerToPeerServices = new PeerToPeerServices();
         }
         public async Task<ActionResult<IEnumerable<Campaigns>>> GetCampaign()
         {
             var result = await dataBaseAccess.Campaigns.ToListAsync();
 
             result.ForEach(x => x.RewardTypes = dataBaseAccess.RewardType.FirstOrDefault(y => y.Id == x.RewardId));
+
+            
+
 
             return result;
         }
@@ -52,7 +56,25 @@ namespace RR.Services
 
             return campaign;
         }
+        public async Task<ActionResult<Campaigns>> updateCampaign(RequestUpdateCampaign requestUpdateCampaign)
+        {
+            Campaigns campaign = await dataBaseAccess.Campaigns.FirstOrDefaultAsync(x => x.Id == requestUpdateCampaign.CampaignId);
 
+            campaign.StartDate = requestUpdateCampaign.StartDate;
+            campaign.votingDate = requestUpdateCampaign.VotingDate;
+            campaign.EndDate = requestUpdateCampaign.EndDate;
+            campaign.CampaignName = requestUpdateCampaign.CampaignName;
+            campaign.RewardId = requestUpdateCampaign.RewardId;
+
+            RewardType rewardType = await dataBaseAccess.RewardType.FirstOrDefaultAsync(x => x.Id == requestUpdateCampaign.RewardId);
+            campaign.RewardTypes = rewardType;
+
+            dataBaseAccess.Campaigns.Update(campaign);
+            await dataBaseAccess.SaveChangesAsync();
+
+            return campaign;
+
+        }
 
 
         // Add Award Category
@@ -75,9 +97,44 @@ namespace RR.Services
             return awardCategory;
         }
 
+       
+
         public async Task<ActionResult<IEnumerable<AwardCategory>>>  getAwardsCategory()
         {
            return  await dataBaseAccess.AwardCategory.Include(x=>x.RewardType).ToListAsync();
+        }
+
+        public async Task<IActionResult> getCampaignDetailsByCampId(int campId ,int rewardId)
+        {
+            Campaigns campaign = await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).FirstOrDefaultAsync(x=>x.Id == campId);
+
+            if (campaign == null)
+            {
+                return null;
+            }
+            if(campaign.RewardTypes.RewardTypes.ToLower().Equals("peertopeer"))
+            {
+                var result = await dataBaseAccess.PeerToPeer.Where(x => x.Campaigns.Id == campId).ToListAsync();
+
+                result.ForEach(x =>
+                {
+                    x.Employee = dataBaseAccess.Employee.FirstOrDefault(emp => emp.EmployeeId.Equals(x.NomineeId));
+                    x.Campaigns = dataBaseAccess.Campaigns.Include(x => x.RewardTypes).FirstOrDefault(x => x.Id == campId);
+
+                });
+
+                return (IActionResult)result;
+            }
+            else
+            {
+                var result = await dataBaseAccess.OtherRewards
+                    .Include(x => x.Employee).Include(x => x.LeadCitation)
+                    .ThenInclude(x => x.LeadCitationReplies).Include(x => x.Campaigns).ThenInclude(x => x.RewardTypes)
+                    .Where(x => x.Campaigns.Id == campId && x.RewardId == rewardId).ToListAsync();
+                return (IActionResult)result;
+            }
+
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RR.DataBaseConnect;
 using RR.Models.PeerToPeerInfo;
+using RR.Models.Rewards_Campaigns;
 using RR.Services;
 using RR.Services.RequestClasses;
 
@@ -8,40 +9,66 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeerToPeerController:ControllerBase
+    public class PeerToPeerController : ControllerBase
     {
         private readonly DataBaseAccess dataBaseAccess;
         public PeerToPeerServices PeerToPeerServices;
+        public EmployeeServices EmployeeServices;
         public PeerToPeerController(DataBaseAccess dataBaseAccess)
         {
             PeerToPeerServices = new PeerToPeerServices(dataBaseAccess);
+            EmployeeServices = new EmployeeServices(dataBaseAccess);
+            this.dataBaseAccess = dataBaseAccess;
         }
 
         [HttpGet]
+        [Route("{CampaignId:int}")]
+        
 
-        public async Task<ActionResult<IEnumerable<PeerToPeer>>> GetPeerToPeer()
+        public async Task<ActionResult<IEnumerable<PeerToPeer>>> GetPeerToPeer([FromRoute] int CampaignId)
         {
            
 
-            var res = await PeerToPeerServices.GetPeerToPeerAsync();
+            var res = await PeerToPeerServices.GetPeerToPeerAsync(CampaignId);
+            // return Ok(res);
 
-            return Ok(res);
+
+            return Ok(res.Value.Select(x => new
+            {
+                Campaigns = x.Campaigns.CampaignName,
+                RewardType=x.Campaigns.RewardTypes.RewardTypes,
+                startDate = x.Campaigns.StartDate,
+                endDate = x.Campaigns.EndDate,
+                NomainatorId = x.NominatorId,
+                NominatorName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(x.NominatorId)).Name,
+                NomineeName = x.Employee.Name,
+                NomineeId = x.NomineeId,
+                Designation = x.Employee.Designation,
+                Month = x.Month,
+                AwardCategory = x.AwardCategory,
+                Citation = x.Citation,
+               
+
+
+
+
+            }));
 
         }
-
+/*
         [HttpGet]
-        [Route("{NominatorId}")]
+        [Route("{NomineeId}")]
 
-        public async Task<ActionResult<PeerToPeer>> Get([FromRoute] string NominatorId)
+        public async Task<ActionResult<PeerToPeer>> Get([FromRoute] string NomineeId)
         {
             
-                var result = await PeerToPeerServices.Get(NominatorId);
+                var result = await PeerToPeerServices.Get(NomineeId);
                 return Ok(result);
             
            
 
         }
-
+*/
 
 
         [HttpPost]

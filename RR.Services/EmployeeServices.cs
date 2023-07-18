@@ -85,7 +85,12 @@ namespace RR.Services
 
                 employeeRole.EmpId = requestEmployee.EmployeeId;
                 employeeRole.EmployeeId=requestEmployee.EmployeeId;
-                
+                //
+
+                // EmployeeId column in employeeRole will not be null 
+                employee.Roles.Add(employeeRole);
+
+                //
                 await dataBaseAccess.EmployeeRoles.AddAsync(employeeRole);
 
 
@@ -102,6 +107,10 @@ namespace RR.Services
         {
 
             Employee employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(x=>x.EmployeeId==requestEmployee.EmployeeId);
+            if(employee == null)
+            {
+                return null;
+            }
             employee.EmployeeId = requestEmployee.EmployeeId;
 
             employee.Name = requestEmployee.Name;
@@ -235,6 +244,13 @@ namespace RR.Services
 
                 return employee;
             }
+        }
+
+        public async Task<ActionResult<Employee>> getEmployeeById(string employeeId)
+        {
+            Employee employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(x => x.EmployeeId.Equals(employeeId));
+
+            return employee;
         }
 
 

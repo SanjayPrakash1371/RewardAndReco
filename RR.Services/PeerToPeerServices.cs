@@ -29,14 +29,15 @@ namespace RR.Services
     
 
 
-        public async Task<ActionResult<IEnumerable<PeerToPeer>>> GetPeerToPeerAsync()
+        public async Task<ActionResult<IEnumerable<PeerToPeer>>> GetPeerToPeerAsync(int campId)
         {
-            var result = await dataBaseAccess.PeerToPeer.ToListAsync();
+            var result = await  dataBaseAccess.PeerToPeer.Where(x=>x.Campaigns.Id==campId).ToListAsync();
 
-            result.ForEach(x =>
+            result.ForEach(  x =>
             {
-                x.Employee = dataBaseAccess.Employee.FirstOrDefault(emp => emp.EmployeeId.Equals(x.NomineeId));
-                x.Campaigns = dataBaseAccess.Campaigns.Find(x.CampaignId);
+                x.Employee =  dataBaseAccess.Employee.FirstOrDefault(emp => emp.EmployeeId.Equals(x.NomineeId));
+                x.Campaigns = dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).FirstOrDefault(x=>x.Id==campId);
+                
             });
 
             return result;
