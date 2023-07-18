@@ -23,7 +23,7 @@ namespace RR.Models.OtherRewardsInfo
 
         public string AwardCategory { get; set; }
 
-        public int Stars { get; set; }
+     
 
         public int Month { get; set; }
 
@@ -36,7 +36,6 @@ namespace RR.Models.OtherRewardsInfo
         [ForeignKey("IdOfCitation")]
         public LeadCitation? LeadCitation { get; set; }
 
-        [ForeignKey("IdOfResult")]
-        public OtherRewardResults OtherRewardResults { get; set; }
+       
     }
 }

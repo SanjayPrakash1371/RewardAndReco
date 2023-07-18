@@ -44,7 +44,7 @@ namespace RR.Services
                 .ExecuteDeleteAsync();
 
 
-            await dataBaseAccess.OtherRewards.Include(x=>x.OtherRewardResults)
+            await dataBaseAccess.OtherRewards
                 .Include(x=>x.LeadCitation).ThenInclude(x=>x.LeadCitationReplies).Where(x=>x.Campaigns.Id==id).ExecuteDeleteAsync();
 
 

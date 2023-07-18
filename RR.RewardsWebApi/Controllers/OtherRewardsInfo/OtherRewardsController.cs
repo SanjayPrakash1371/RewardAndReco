@@ -90,9 +90,10 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
         // POST api/<MonthlyRewardsController>
         [HttpPost]
-        public async Task<ActionResult<OtherRewards>> AddRewards(RequestOtherRewards requestOtherRewards)
+        [Route("AddNomination")]
+        public async Task<ActionResult<OtherRewards>> AddNomination(RequestOtherRewards requestOtherRewards)
         {
-            var result = await OtherRewardsServices.AddReward(requestOtherRewards);
+            var result = await OtherRewardsServices.addNomination(requestOtherRewards);
 
             return Ok(result.Value);
 
@@ -101,9 +102,9 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
         // PUT api/<MonthlyRewardsController>/5
         [HttpPut]
         [Route("UpdateNomination")]
-        public async Task<ActionResult<OtherRewards>> update(RequestOtherRewards requestOtherRewards)
+        public async Task<ActionResult<OtherRewards>> update(UpdateNomination updateNomination)
         {
-            var result=await OtherRewardsServices.updateNominations(requestOtherRewards);
+            var result = await OtherRewardsServices.updateNomination(updateNomination);
 
             if (result == null)
             {

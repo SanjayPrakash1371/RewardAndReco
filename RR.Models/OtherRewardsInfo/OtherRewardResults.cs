@@ -13,9 +13,13 @@ namespace RR.Models.OtherRewardsInfo
     {
         public int Id { get; set; }
 
+        
+        
         public int RewardId { get; set; }
 
         public int CampaignId { get; set; }
+
+        public string VoterId { get; set; }
 
         public string NominatorId { get; set; }
 
@@ -31,6 +35,9 @@ namespace RR.Models.OtherRewardsInfo
         public Employee? Employee { get; set; }
         [ForeignKey("CampId")]
         public Campaigns? Campaigns { get; set; }
+
+        [ForeignKey("IfOfNomination")]
+        public OtherRewards? OtherRewards { get; set; }
 
     }
 }
