@@ -16,8 +16,7 @@ namespace RR.Models.EmployeeInfo
 
         public string RoleName { get; set; }
 
-        [ForeignKey("EmployeeId")]
-        public string EmployeeId { get; set; }
+       
       
         
 

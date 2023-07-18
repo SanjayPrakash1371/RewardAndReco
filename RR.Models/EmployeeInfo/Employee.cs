@@ -22,6 +22,6 @@ namespace RR.Models.EmployeeInfo
         [ForeignKey("UserPassId")]
         public UserNamePassword UserNamePassword { get; set; }
 
-        public virtual ICollection<EmployeeRoles> Roles { get; set; }
+        public virtual ICollection<EmployeeRoles> Roles { get; set; } = new List<EmployeeRoles>();
     }
 }

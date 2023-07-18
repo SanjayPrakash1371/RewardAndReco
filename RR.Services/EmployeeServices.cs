@@ -84,7 +84,7 @@ namespace RR.Services
                 employeeRole.RoleName = employeeRole.role.RoleName;
 
                 employeeRole.EmpId = requestEmployee.EmployeeId;
-                employeeRole.EmployeeId=requestEmployee.EmployeeId;
+              
                 //
 
                 // EmployeeId column in employeeRole will not be null 
@@ -172,7 +172,7 @@ namespace RR.Services
                 employeeRole.RoleName = employeeRole.role.RoleName;
 
                 employeeRole.EmpId = requestEmployee.EmployeeId;
-                employeeRole.EmployeeId = requestEmployee.EmployeeId;
+              
 
                 await dataBaseAccess.EmployeeRoles.AddAsync(employeeRole);
             }

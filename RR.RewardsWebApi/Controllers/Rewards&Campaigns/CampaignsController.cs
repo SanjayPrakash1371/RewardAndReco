@@ -45,6 +45,19 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 
 
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult<Campaigns>> deleteCampaign([FromRoute] int id)
+        {
+            var result= await  CampaignServices.getCampaignById(id);
+
+
+            if(result==null)
+            {
+                return BadRequest("Campaign Not Present da");
+            }
+            return Ok(result);
+        }
 
 
 

@@ -22,5 +22,7 @@ namespace RR.Models.Rewards_Campaigns
         public int RewardId { get; set; }
 
         public RewardType? RewardTypes { get; set; }
+
+      //  public int softdelete { get;set; }
     }
 }

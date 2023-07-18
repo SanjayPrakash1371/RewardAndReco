@@ -27,14 +27,38 @@ namespace RR.Services
         }
         public async Task<ActionResult<IEnumerable<Campaigns>>> GetCampaign()
         {
-            var result = await dataBaseAccess.Campaigns.ToListAsync();
+            var result = await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).ToListAsync();
 
-            result.ForEach(x => x.RewardTypes = dataBaseAccess.RewardType.FirstOrDefault(y => y.Id == x.RewardId));
+          //  result.ForEach(x => x.RewardTypes = dataBaseAccess.RewardType.FirstOrDefault(y => y.Id == x.RewardId));
 
             
 
 
             return result;
+        }
+
+        public async Task<ActionResult<Campaigns>> getCampaignById(int id)
+        {
+            await dataBaseAccess.PeerToPeer.Include(x => x.Campaigns).Include(x => x.PeerToPeerResults)
+                .Where(x=>x.Campaigns.Id==id)
+                .ExecuteDeleteAsync();
+
+
+            await dataBaseAccess.OtherRewards.Include(x=>x.OtherRewardResults)
+                .Include(x=>x.LeadCitation).ThenInclude(x=>x.LeadCitationReplies).Where(x=>x.Campaigns.Id==id).ExecuteDeleteAsync();
+
+
+
+            Campaigns campaigns =await dataBaseAccess.Campaigns.FirstOrDefaultAsync(x => x.Id == id);
+
+
+            if(campaigns == null)
+            {
+                return null;
+            }
+            dataBaseAccess.Campaigns.Remove(campaigns);
+            await dataBaseAccess.SaveChangesAsync();
+            return campaigns;
         }
 
         public async Task<ActionResult<Campaigns>> AddCampaign(RequestCampaign requestCampaign)
