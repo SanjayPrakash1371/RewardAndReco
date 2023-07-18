@@ -38,7 +38,7 @@ namespace RR.RewardsWebApi.Controllers.AuthenticationController
 
             if(userNamePassword == null)
             {
-                return BadRequest("Null");
+                return BadRequest("User Not Found");
             }
             if (userNamePassword.EmailID != requestUserIdAndPassword.EmailID)
             {

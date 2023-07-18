@@ -73,6 +73,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
                 Reply = x.LeadCitation.LeadCitationReplies.Select(y => new
                 {
                     ReplierId = y.ReplierId,
+                    ReplierName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(y.ReplierId)).Name,
                     Comments = y.ReplyCitation
                 })
 
