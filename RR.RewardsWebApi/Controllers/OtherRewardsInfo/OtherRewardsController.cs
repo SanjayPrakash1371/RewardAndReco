@@ -54,35 +54,43 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
             var res = await OtherRewardsServices.GetAllNominationByCampId(CampaignId, RewardId);
 
-            return Ok(res.Value.Select(x => new
+            if (res != null)
             {
-                Campaigns = x.Campaigns.CampaignName,
-                CampaignId = x.CampaignId,
-                RewardType = x.Campaigns.RewardTypes.RewardTypes,
-                startDate = x.Campaigns.StartDate,
-                endDate = x.Campaigns.EndDate,
-                NomainatorId = x.NominatorId,
-                NominatorName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(x.NominatorId)).Name,
-                NomineeName = x.Employee.Name,
-                NomineeId = x.NomineeId,
-                Designation = x.Employee.Designation,
-                Month = x.Month,
-                AwardCategory = x.AwardCategory,
-                CitationId = x.LeadCitation.Id,
-                Citation = x.LeadCitation.Citation,
-                Reply = x.LeadCitation.LeadCitationReplies.Select(y => new
+
+                return Ok(res.Value.Select(x => new
                 {
-                    ReplierId = y.ReplierId,
-                    ReplierName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(y.ReplierId)).Name,
-                    Comments = y.ReplyCitation
-                })
+                    Campaigns = x.Campaigns.CampaignName,
+                    CampaignId = x.CampaignId,
+                    RewardType = x.Campaigns.RewardTypes.RewardTypes,
+                    startDate = x.Campaigns.StartDate,
+                    endDate = x.Campaigns.EndDate,
+                    NomainatorId = x.NominatorId,
+                    NominatorName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(x.NominatorId)).Name,
+                    NomineeName = x.Employee.Name,
+                    NomineeId = x.NomineeId,
+                    Designation = x.Employee.Designation,
+                    Month = x.Month,
+                    AwardCategory = x.AwardCategory,
+                    CitationId = x.LeadCitation.Id,
+                    Citation = x.LeadCitation.Citation,
+                    Reply = x.LeadCitation.LeadCitationReplies.Select(y => new
+                    {
+                        ReplierId = y.ReplierId,
+                        ReplierName = dataBaseAccess.Employee.FirstOrDefault(e => e.EmployeeId.Equals(y.ReplierId)).Name,
+                        Comments = y.ReplyCitation
+                    })
 
 
 
 
 
 
-            }));
+                }));
+            }
+            else
+            {
+                return BadRequest("No one has Nominated still.....");
+            }
 
             /* return Ok(res.Value);*/
         }

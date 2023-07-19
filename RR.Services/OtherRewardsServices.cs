@@ -40,17 +40,27 @@ namespace RR.Services
         }
         public async Task<ActionResult<IEnumerable<OtherRewards>>> GetAllNominationByCampId(int campId, int rewardId)
         {
-            var result = await dataBaseAccess.OtherRewards.Include(x => x.Employee).Include(x => x.LeadCitation).ThenInclude(x => x.LeadCitationReplies).Include(x => x.Campaigns).ThenInclude(x => x.RewardTypes).Where(x => x.Campaigns.Id == campId && x.RewardId == rewardId).ToListAsync();
-            /* result.ForEach(async x =>
-             {
-                 //x.Employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(e => e.EmployeeId.Equals(x.NomineeId));
-                 *//*x.LeadCitation=await dataBaseAccess.LeadCitation.
-                 Include(c=>c.LeadCitationReplies).
-                 FirstOrDefaultAsync(l=>l.NominatorId.Equals(x.NominatorId));*//*
 
-             });*/
+            var res = dataBaseAccess.OtherRewards.Find(campId);
 
-            return result;
+            if (res != null)
+            {
+                var result = await dataBaseAccess.OtherRewards.Include(x => x.Employee).Include(x => x.LeadCitation).ThenInclude(x => x.LeadCitationReplies).Include(x => x.Campaigns).ThenInclude(x => x.RewardTypes).Where(x => x.Campaigns.Id == campId && x.RewardId == rewardId).ToListAsync();
+                /* result.ForEach(async x =>
+                 {
+                     //x.Employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(e => e.EmployeeId.Equals(x.NomineeId));
+                     *//*x.LeadCitation=await dataBaseAccess.LeadCitation.
+                     Include(c=>c.LeadCitationReplies).
+                     FirstOrDefaultAsync(l=>l.NominatorId.Equals(x.NominatorId));*//*
+
+                 });*/
+                return result;
+            }
+
+            else
+            {
+                return null;
+            }
         }
         // Get Nomination By NominatorId and Campaign Id
         public async Task<ActionResult<OtherRewards>> GetNominationById(string NominatorID, int campaignId)
