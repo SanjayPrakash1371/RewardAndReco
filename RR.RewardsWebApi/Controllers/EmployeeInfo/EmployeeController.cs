@@ -64,7 +64,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
                 return BadRequest("EmpId not Exist");
             }
 
-            return Ok(result.Value);
+            return Ok( new { Name=result.Value.Name , Email= result.Value.EmailId, EmployeeId = result.Value.EmployeeId});
         }
         /*[HttpDelete]
         [Route("{EmployeeId}")]

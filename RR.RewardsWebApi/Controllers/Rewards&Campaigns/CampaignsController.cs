@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RR.DataBaseConnect;
+using RR.Models;
 using RR.Models.Rewards_Campaigns;
 using RR.Services;
 using RR.Services.RequestClasses;
@@ -16,13 +19,19 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 
         public OtherRewardsServices OtherRewardsServices;
         private DataBaseAccess databaseAccess { get; set; }
-        public CampaignsController(DataBaseAccess dataBaseAccess)
+
+        private readonly IEmailTestService emailTestService;
+        public CampaignsController(DataBaseAccess dataBaseAccess,IEmailTestService emailTestService)
         {
             this.databaseAccess = dataBaseAccess;
             CampaignServices = new CampaignServices(dataBaseAccess);
 
             PeerToPeerServices = new PeerToPeerServices(dataBaseAccess);
             OtherRewardsServices = new OtherRewardsServices(dataBaseAccess);
+
+            this.emailTestService = emailTestService;
+
+
         }
 
         [HttpGet]
@@ -38,9 +47,47 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
         [HttpPost]
         public async Task<ActionResult<Campaigns>> AddCampaign(RequestCampaign requestCampaign)
         {
+            // Add to database is commented . change it out
 
             var res = await CampaignServices.AddCampaign(requestCampaign);
-            return Ok(res.Value);
+
+            
+
+            List<string>  mails = new List<string>();
+
+            if(requestCampaign.RewardId ==1)
+            {
+                var employees = await databaseAccess.Employee.ToListAsync();
+
+                employees.ForEach(x =>
+                {
+                    mails.Add(x.EmailId.ToString());
+                });
+            }
+            else
+            {
+                var employees = await databaseAccess.Employee.Include(x=>x.Roles).Where(x=>x.Roles.First().IdOfRole!=4).ToListAsync();
+
+                employees.ForEach(x =>
+                {
+                    mails.Add(x.EmailId.ToString());
+                });
+
+                
+            }
+            string[] sd= requestCampaign.StartDate.Split('/');
+
+            int dd = Convert.ToInt32(sd[0]);
+
+            int mm = Convert.ToInt32(sd[1]);
+
+            int yy = Convert.ToInt32(sd[2]);
+
+            
+
+
+           var email = BackgroundJob.Schedule(() => emailTestService.SendAllMailId(mails,res.Value.CampaignName, res.Value.RewardTypes.RewardTypes), new DateTime(yy, mm, dd, 23, 00, 00));
+                return Ok( new { mails , res.Value, sd, dd,mm,yy});
         }
         [HttpPut]
         public async Task<ActionResult<Campaigns>> editCampaings(RequestUpdateCampaign requestUpdateCampaign)

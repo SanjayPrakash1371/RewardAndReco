@@ -1,6 +1,8 @@
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RR.DataBaseConnect;
+using RR.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +14,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //
+builder.Services.AddScoped<IEmailTestService, EmailService>();
 
+
+
+builder.Services.AddHangfire(x =>
+{
+    x.UseSqlServerStorage(builder.Configuration.GetConnectionString("EmailConnect"));
+});
+
+
+builder.Services.AddHangfireServer();
+//
 
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
@@ -53,5 +66,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseHangfireDashboard();
 
 app.Run();
