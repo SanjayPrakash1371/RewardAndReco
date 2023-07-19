@@ -68,6 +68,27 @@ namespace RR.Services
             
         }
 
+
+        /*public async Task<ActionResult<PeerToPeer>> GetByNominationID(string NominatorId,int CampaignId)
+        {
+            var result = dataBaseAccess.PeerToPeer.Find(CampaignId);
+
+            if (result != null)
+            {
+
+                var res =  await dataBaseAccess.PeerToPeer.Include(x => x.Employee)
+                              .Include(x => x.Campaigns)
+                              .Include(x => x.PeerToPeerResults)
+                              .Where(x => x.NominatorId.Equals(NominatorId) && x.CampaignId == CampaignId).ToListAsync();
+                return res;
+            }
+
+            else
+            {
+                return null;
+            }
+        }*/
+
        
 
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RR.DataBaseConnect;
+using RR.Models.OtherRewardsInfo;
 using RR.Models.PeerToPeerInfo;
 using RR.Models.Rewards_Campaigns;
 using RR.Services;
@@ -21,6 +22,25 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
             EmployeeServices = new EmployeeServices(dataBaseAccess);
             this.dataBaseAccess = dataBaseAccess;
         }
+
+
+
+        /*[HttpGet]
+        [Route("GetByNominatorId/{NominatorId}/{campaignId:int}")]
+
+        public async Task<ActionResult<OtherRewards>> getNominationsById([FromRoute] string NominatorId, int campaignId)
+        {
+            var result = await PeerToPeerServices.GetByNominationID(NominatorId, campaignId);
+
+            if (result == null)
+            {
+                return BadRequest("Not yet Nominated");
+            }
+
+            return Ok(result.Value);
+        }*/
+
+
 
         [HttpGet]
         [Route("{CampaignId:int}")]

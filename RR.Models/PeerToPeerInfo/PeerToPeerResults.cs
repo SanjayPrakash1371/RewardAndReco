@@ -18,6 +18,8 @@ namespace RR.Models.PeerToPeerInfo
         public string? awardCategory { get; set; }
         public string? Citation { get; set; }
 
+        
+
         [ForeignKey("IdOfNominee")]
         public Employee? Employee { get; set; }
     }

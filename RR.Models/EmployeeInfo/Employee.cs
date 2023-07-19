@@ -11,9 +11,9 @@ namespace RR.Models.EmployeeInfo
 
         public string Name { get; set; }
 
-      /*  public string EmailId { get; set; }
+        public string EmailId { get; set; }
 
-        public string Password { get; set; }*/
+       /* public string Password { get; set; }*/
 
         public string Designation { get; set; }
 

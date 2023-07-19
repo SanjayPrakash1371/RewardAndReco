@@ -57,7 +57,7 @@ namespace RR.Services
             employee.EmployeeId = requestEmployee.EmployeeId;
 
             employee.Name = requestEmployee.Name;
-            // employee.EmailId = requestEmployee.EmailId;
+             employee.EmailId = requestEmployee.EmailId;
             //  employee.Password = requestEmployee.Password;
             employee.Designation = requestEmployee.Designation;
 
@@ -116,7 +116,7 @@ namespace RR.Services
             employee.EmployeeId = requestEmployee.EmployeeId;
 
             employee.Name = requestEmployee.Name;
-            // employee.EmailId = requestEmployee.EmailId;
+            employee.EmailId = requestEmployee.EmailId;
             //  employee.Password = requestEmployee.Password;
             employee.Designation = requestEmployee.Designation;
 
@@ -174,6 +174,8 @@ namespace RR.Services
                 employeeRole.RoleName = employeeRole.role.RoleName;
 
                 employeeRole.EmpId = requestEmployee.EmployeeId;
+
+                employee.Roles.Add(employeeRole);   
 
 
                 await dataBaseAccess.EmployeeRoles.AddAsync(employeeRole);

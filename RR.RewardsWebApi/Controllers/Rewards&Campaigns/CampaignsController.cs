@@ -49,7 +49,7 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
         [Route("{id}")]
         public async Task<ActionResult<Campaigns>> deleteCampaign([FromRoute] int id)
         {
-            var result= await  CampaignServices.getCampaignById(id);
+            var result= await  CampaignServices.deleteCamp(id);
 
 
             if(result==null)

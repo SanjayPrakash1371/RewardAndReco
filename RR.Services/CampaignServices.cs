@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RR.DataBaseConnect;
+using RR.Models.OtherRewardsInfo;
+using RR.Models.PeerToPeerInfo;
 using RR.Models.Rewards_Campaigns;
 using RR.Services.RequestClasses;
 using System;
@@ -158,6 +160,73 @@ namespace RR.Services
                     .Where(x => x.Campaigns.Id == campId && x.RewardId == rewardId).ToListAsync();
                 return (IActionResult)result;
             }
+
+
+        }
+        public async Task<ActionResult<Campaigns>> deleteCamp(int campId)
+        {
+            // Peer 
+
+          List<PeerToPeer> peerToPeers=  await dataBaseAccess.PeerToPeer.Include(x=>x.PeerToPeerResults).Where(x => x.Campaigns.Id == campId).ToListAsync();
+            foreach(var peerToPeer in peerToPeers)
+            {
+                 dataBaseAccess.PeerToPeer.Remove(peerToPeer);
+
+            }
+            await dataBaseAccess.SaveChangesAsync();
+
+            List<LeadCitationReplies> leadCitationReplies = await dataBaseAccess.LeadCitationReplies.
+                Where(x=>x.Campaigns.Id==campId).ToListAsync();
+
+            //
+            List<OtherRewardResults> otherRewardResults = await dataBaseAccess.OtherRewardResults.
+               Where(x => x.Campaigns.Id == campId).ToListAsync();
+
+            foreach (var otherRewardResult in otherRewardResults)
+            {
+                dataBaseAccess.OtherRewardResults.Remove(otherRewardResult);
+            }
+            await dataBaseAccess.SaveChangesAsync();
+            //
+
+            List<OtherRewards> otherReward = await dataBaseAccess.OtherRewards.Include(x => x.LeadCitation).
+               Where(x => x.Campaigns.Id == campId).ToListAsync();
+
+            foreach (var item in otherReward)
+            {
+                dataBaseAccess.OtherRewards.Remove(item);
+            }
+            await dataBaseAccess.SaveChangesAsync();
+
+            //
+
+            foreach (var leadCitationReply  in leadCitationReplies)
+            {
+                 dataBaseAccess.LeadCitationReplies.Remove(leadCitationReply);
+            }
+            await dataBaseAccess.SaveChangesAsync();
+
+            List<LeadCitation> leadCitation = await dataBaseAccess.LeadCitation.
+               Where(x => x.Campaigns.Id == campId).ToListAsync();
+
+            foreach (var leadC in leadCitation)
+            {
+                dataBaseAccess.LeadCitation.Remove(leadC);
+                await dataBaseAccess.SaveChangesAsync();
+            }
+          
+
+           
+           
+
+            Campaigns campaigns = await dataBaseAccess.Campaigns.FindAsync(campId);
+            dataBaseAccess.Campaigns.Remove(campaigns);
+
+            await dataBaseAccess.SaveChangesAsync();
+
+            return campaigns;
+
+
 
 
         }

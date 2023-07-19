@@ -45,7 +45,9 @@ namespace RR.Services
 
             if (res != null)
             {
-                var result = await dataBaseAccess.OtherRewards.Include(x => x.Employee).Include(x => x.LeadCitation).ThenInclude(x => x.LeadCitationReplies).Include(x => x.Campaigns).ThenInclude(x => x.RewardTypes).Where(x => x.Campaigns.Id == campId && x.RewardId == rewardId).ToListAsync();
+                var result = await dataBaseAccess.OtherRewards.Include(x => x.Employee)
+                    .Include(x => x.LeadCitation).ThenInclude(x => x.LeadCitationReplies).Include(x => x.Campaigns).ThenInclude(x => x.RewardTypes)
+                    .Where(x => x.Campaigns.Id == campId && x.RewardId == rewardId).ToListAsync();
                 /* result.ForEach(async x =>
                  {
                      //x.Employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(e => e.EmployeeId.Equals(x.NomineeId));
@@ -63,17 +65,29 @@ namespace RR.Services
             }
         }
         // Get Nomination By NominatorId and Campaign Id
-        public async Task<ActionResult<OtherRewards>> GetNominationById(string NominatorID, int campaignId)
+        public async Task<ActionResult<IEnumerable<OtherRewards>>> GetNominationById(string NominatorID, int campaignId)
         {
-            OtherRewards otherRewards = await dataBaseAccess.OtherRewards.Include(x => x.Employee).Include(x => x.Campaigns).Include(x => x.LeadCitation).ThenInclude(x => x.LeadCitationReplies)
-                .FirstOrDefaultAsync(x => x.NominatorId.Equals(NominatorID) && x.Campaigns.Id == campaignId);
+
+
+            List<OtherRewards> otherRewards = await dataBaseAccess.OtherRewards.Include(x => x.Employee)
+                .Include(x => x.Campaigns).Include(x => x.LeadCitation).ThenInclude(x => x.LeadCitationReplies)
+                .Where(x => x.NominatorId.Equals(NominatorID) && x.Campaigns.Id == campaignId).ToListAsync();
+
+            /*  OtherRewards otherRewards = await dataBaseAccess.OtherRewards.Include(x => x.Employee)
+                  .Include(x => x.Campaigns).Include(x => x.LeadCitation).ThenInclude(x => x.LeadCitationReplies)
+                  .Where(x=>x.NominatorId.Equals(NominatorID) &&  x.CampaignId==campaignId).ToListAsync();*/
+
+
 
 
             if (otherRewards == null)
             {
                 return null;
             }
-            return otherRewards;
+            else
+            {
+                return otherRewards;
+            }
         }
 
         public async Task<ActionResult<OtherRewards>> addNomination(RequestOtherRewards requestOtherRewards)
