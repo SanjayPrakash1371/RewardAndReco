@@ -25,26 +25,7 @@ namespace RR.Services
         {
             var result = await dataBaseAccess.Employee.Include(x=>x.UserNamePassword).Include(x=>x.Roles).ToListAsync();
 
-            /*result.ForEach(employee =>
-            {
-                // employee.UsernamePassword = allDataAccess.usernamepassword.FirstOrDefault(x => x.employeeId == employee.EmployeeId);
-                employee.Roles = dataBaseAccess.EmployeeRoles.Where(x => x.EmpId== employee.EmployeeId).ToList();
-               
-
-
-            });*/
-
-
-
-            /*var query = (from a in allDataAccess.Employees  join b in allDataAccess.EmployeesRoles on a.EmployeeId equals b.empId 
-                        select  new { a.Name,a.designation,b.rolename}).ToList();*/
-
-            /*return  allDataAccess.Employees.Include(x=>x.Roles).Select(x=> new
-             {
-                 Name=x.Name,
-                 Roles=x.Roles,
-
-             }).ToList();*/
+         
 
             return result;
         }
@@ -55,7 +36,7 @@ namespace RR.Services
             employee.EmployeeId = requestEmployee.EmployeeId;
 
             employee.Name = requestEmployee.Name;
-           // employee.EmailId = requestEmployee.EmailId;
+          employee.EmailId = requestEmployee.EmailId;
           //  employee.Password = requestEmployee.Password;
             employee.Designation = requestEmployee.Designation;
 
@@ -114,7 +95,7 @@ namespace RR.Services
             employee.EmployeeId = requestEmployee.EmployeeId;
 
             employee.Name = requestEmployee.Name;
-            // employee.EmailId = requestEmployee.EmailId;
+             employee.EmailId = requestEmployee.EmailId;
             //  employee.Password = requestEmployee.Password;
             employee.Designation = requestEmployee.Designation;
 
