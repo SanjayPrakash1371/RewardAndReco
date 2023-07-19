@@ -153,10 +153,15 @@ namespace RR.Services
                 employeeRole.RoleName = employeeRole.role.RoleName;
 
                 employeeRole.EmpId = requestEmployee.EmployeeId;
-              
+
+
+                // EmployeeId column in employeeRole will not be null 
+                employee.Roles.Add(employeeRole);
+
 
                 await dataBaseAccess.EmployeeRoles.AddAsync(employeeRole);
             }
+             dataBaseAccess.Employee.Update(employee);
             await dataBaseAccess.SaveChangesAsync();
 
             return employee;

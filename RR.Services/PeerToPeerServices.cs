@@ -44,13 +44,17 @@ namespace RR.Services
 
         }
 
-        public async Task<ActionResult<PeerToPeer>> Get([FromRoute] string NominatorId)
+        public async Task<ActionResult<PeerToPeer>> GetByNominator(int campId, string NominatorId)
         {
             
-                var result = await dataBaseAccess.PeerToPeer.FirstOrDefaultAsync(x => x.NominatorId.Equals(NominatorId));
-                result.Employee = dataBaseAccess.Employee.FirstOrDefault(x => x.EmployeeId.Equals(NominatorId));
+                var result = await dataBaseAccess.PeerToPeer.Include(x=>x.Employee)
+                .Include(x=>x.Campaigns).FirstOrDefaultAsync(x => x.NominatorId.Equals(NominatorId)&&x.Campaigns.Id==campId);
 
-                return result;
+            if (result == null)
+            {
+                return null;
+            }
+             return result;
             
             
         }

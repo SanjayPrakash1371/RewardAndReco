@@ -28,7 +28,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
         public async Task<ActionResult<IEnumerable<OtherRewardResults>>> Get()
         {
 
-            return await dataBaseAccess.OtherRewardResults.ToListAsync();
+            return await dataBaseAccess.OtherRewardResults.Include(x=>x.OtherRewards).Include(x=>x.Employee).Include(x=>x.Campaigns).ToListAsync();
 
         }
         [HttpGet]
@@ -57,7 +57,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
                     AwardC=s.First().AwardCategory
 
                 }) ;
-            return Ok(new {arr});
+            return Ok(arr);
 
 
         }

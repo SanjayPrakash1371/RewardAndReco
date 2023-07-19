@@ -55,20 +55,19 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
             }));
 
         }
-/*
         [HttpGet]
-        [Route("{NomineeId}")]
-
-        public async Task<ActionResult<PeerToPeer>> Get([FromRoute] string NomineeId)
+        [Route("get/GetByNominatorId/{CampaignId:int}/{NominatorId}")]
+        public async Task<ActionResult<PeerToPeer>> GetbyNominatorId(int CampaignId, string NominatorId)
         {
-            
-                var result = await PeerToPeerServices.Get(NomineeId);
-                return Ok(result);
-            
-           
+            var result = await PeerToPeerServices.GetByNominator(CampaignId, NominatorId);
 
+            if (result == null)
+            {
+                return BadRequest("Not Yet Nominated");
+            }
+            return Ok(new { NominatorId = result.Value.NominatorId, NomineeId = result.Value.NomineeId });
         }
-*/
+
 
 
         [HttpPost]
@@ -82,7 +81,7 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 
 
             var res = await PeerToPeerServices.AddPeerToPeerNominees(requestPeerToPeer);
-            return Ok(res);
+            return Ok(new { res.Value.NominatorId , res.Value.NomineeId} );
 
         }
 

@@ -128,6 +128,11 @@ namespace RR.Services
            return  await dataBaseAccess.AwardCategory.Include(x=>x.RewardType).ToListAsync();
         }
 
+        /*public async Task<ActionResult<Campaigns>> deleteCampaign(int campId)
+        {
+
+        }*/
+        // Not Working
         public async Task<IActionResult> getCampaignDetailsByCampId(int campId ,int rewardId)
         {
             Campaigns campaign = await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).FirstOrDefaultAsync(x=>x.Id == campId);

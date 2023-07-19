@@ -52,10 +52,10 @@ namespace RR.Services
             return result;
         }
         // Get Nomination By NominatorId and Campaign Id
-        public async Task<ActionResult<OtherRewards>> GetNominationById(string NominatorID, int campaignId)
+        public async Task<ActionResult<IEnumerable<OtherRewards>>> GetNominationById(string NominatorID, int campaignId)
         {
-            OtherRewards otherRewards = await dataBaseAccess.OtherRewards.Include(x=>x.Employee).Include(x=>x.Campaigns).Include(x=>x.LeadCitation).ThenInclude(x=>x.LeadCitationReplies)
-                .FirstOrDefaultAsync(x => x.NominatorId.Equals(NominatorID) && x.Campaigns.Id == campaignId);
+            List<OtherRewards> otherRewards= await dataBaseAccess.OtherRewards.Include(x=>x.Employee).Include(x=>x.Campaigns).Include(x=>x.LeadCitation).ThenInclude(x=>x.LeadCitationReplies)
+                .Where(x => x.NominatorId.Equals(NominatorID) && x.Campaigns.Id == campaignId).ToListAsync() ;
             
 
             if(otherRewards == null)
