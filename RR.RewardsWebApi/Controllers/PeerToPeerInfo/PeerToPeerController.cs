@@ -72,7 +72,7 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 
         [HttpPost]
 
-        public async Task<ActionResult<PeerToPeer>> AddPeerToPeerNominees(RequestPeerToPeer requestPeerToPeer)
+        public async Task<ActionResult<PeerToPeer>> AddPeerToPeerNominees(RequestNomination requestPeerToPeer)
         {
             if(requestPeerToPeer.NominatorId.Equals(requestPeerToPeer.NomineeId))
             {

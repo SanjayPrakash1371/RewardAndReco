@@ -65,7 +65,7 @@ namespace RR.Services
             return otherRewards;
         }
 
-        public async Task<ActionResult<OtherRewards>> addNomination(RequestOtherRewards requestOtherRewards)
+        public async Task<ActionResult<OtherRewards>> addNomination(RequestNomination requestOtherRewards)
         {
             OtherRewards otherRewards = new OtherRewards();
 

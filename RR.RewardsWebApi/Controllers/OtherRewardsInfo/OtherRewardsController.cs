@@ -91,7 +91,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
         // POST api/<MonthlyRewardsController>
         [HttpPost]
         [Route("AddNomination")]
-        public async Task<ActionResult<OtherRewards>> AddNomination(RequestOtherRewards requestOtherRewards)
+        public async Task<ActionResult<OtherRewards>> AddNomination(RequestNomination requestOtherRewards)
         {
             var result = await OtherRewardsServices.addNomination(requestOtherRewards);
 

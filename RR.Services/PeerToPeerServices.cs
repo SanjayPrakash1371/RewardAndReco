@@ -62,7 +62,7 @@ namespace RR.Services
        
 
 
-        public async Task<ActionResult<PeerToPeer>> AddPeerToPeerNominees(RequestPeerToPeer requestPeerToPeer)
+        public async Task<ActionResult<PeerToPeer>> AddPeerToPeerNominees(RequestNomination requestPeerToPeer)
         {
             PeerToPeer peerToPeer = new PeerToPeer();
             peerToPeer.CampaignId = requestPeerToPeer.CampaignId;
@@ -90,6 +90,8 @@ namespace RR.Services
 
             //Campaign 
             Campaigns campaign = await dataBaseAccess.Campaigns.FirstOrDefaultAsync(x => x.Id.Equals(peerToPeer.CampaignId));
+
+            result.campaigns = campaign;
 
 
             peerToPeer.Campaigns = campaign;
