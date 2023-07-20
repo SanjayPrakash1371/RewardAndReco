@@ -75,13 +75,13 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 
                 
             }
-            string[] sd= requestCampaign.StartDate.Split('/');
+            string[] sd= requestCampaign.StartDate.Split('-');
 
-            int dd = Convert.ToInt32(sd[0]);
+            int dd = Convert.ToInt32(sd[2]);
 
             int mm = Convert.ToInt32(sd[1]);
 
-            int yy = Convert.ToInt32(sd[2]);
+            int yy = Convert.ToInt32(sd[0]);
 
             
 
