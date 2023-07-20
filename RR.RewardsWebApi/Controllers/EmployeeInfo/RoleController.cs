@@ -7,6 +7,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin")]*/
     public class RoleController:ControllerBase
     {
         private readonly DataBaseAccess dataBaseAccess;

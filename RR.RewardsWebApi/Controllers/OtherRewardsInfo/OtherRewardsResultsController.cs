@@ -53,10 +53,12 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
                 GroupBy(x => x.NomineeId).Select(s => new
                 {
                     NomineeId = s.First().NomineeId,
+                    NomineeName = s.First().Employee.Name,
+                    Designation = s.First().Employee.Designation,
                     Stars = s.Sum(sum => sum.Stars) / s.ToList().Count(),
                     AwardC = s.First().AwardCategory
 
-                });
+                }) ;
             return Ok(arr);
 
 
@@ -71,7 +73,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
             List<int> nominationsIds = new List<int>();
 
 
-            await dataBaseAccess.OtherRewardResults.Include(x => x.OtherRewards).ThenInclude(x=>x.Employee)
+            await dataBaseAccess.OtherRewardResults.Include(x=>x.Employee).Include(x=>x.OtherRewards).ThenInclude(x=>x.LeadCitation).ThenInclude(x=>x.LeadCitationReplies)
                 
                 .Where(x => x.VoterId.Equals(checkvote.VoterId) && x.CampaignId == checkvote.campId).ForEachAsync(x =>
                 {
@@ -82,13 +84,17 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
                     nomineesList.NomineeId = x.NomineeId;
                     nomineesList.NominatorId = x.NominatorId;
                     nomineesList.campaignId = x.CampaignId;
-                    
+                    nomineesList.designation = x.Employee.Designation;
+                    nomineesList.name = x.Employee.Name;
+                    nomineesList.citation = x.OtherRewards.LeadCitation.Citation;
+                    nomineesList.LeadCitationReplies = x.OtherRewards.LeadCitation.LeadCitationReplies.ToList();
+
                     votedIds.Add(nomineesList);
 
                     nominationsIds.Add(x.OtherRewards.Id);
                 });
 
-            await dataBaseAccess.OtherRewards.Where(x=>x.Campaigns.Id== checkvote.campId).Include(x => x.Employee).ForEachAsync(x =>
+            await dataBaseAccess.OtherRewards.Where(x=>x.Campaigns.Id== checkvote.campId).Include(x => x.Employee).Include(x=>x.LeadCitation).ThenInclude(x=>x.LeadCitationReplies).ForEachAsync(x =>
             {
                 NomineesList nomineesList = new NomineesList();
                 nomineesList.IDOfNomination = x.Id;
@@ -97,6 +103,10 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
                 nomineesList.NomineeId = x.NomineeId;
                 nomineesList.NominatorId = x.NominatorId;
                 nomineesList.campaignId= x.CampaignId;
+                nomineesList.designation = x.Employee.Designation;
+                nomineesList.name= x.Employee.Name;
+                nomineesList.citation = x.LeadCitation.Citation;
+                nomineesList.LeadCitationReplies=x.LeadCitation.LeadCitationReplies.ToList();
 
                 if(!nominationsIds.Contains(x.Id))
                 {
@@ -167,7 +177,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
             if(result==null)
             {
-                return BadRequest("Not Valid Yaar");
+                return BadRequest("Not Valid");
             }
 
             return Ok(new { NomineeId=result.Value.NomineeId, NominatorId=result.Value.NominatorId,

@@ -9,6 +9,7 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin,Moderator,Lead,User")]*/
     public class PeerToPeerController : ControllerBase
     {
         private readonly DataBaseAccess dataBaseAccess;
@@ -65,7 +66,7 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
             {
                 return BadRequest("Not Yet Nominated");
             }
-            return Ok(new { NominatorId = result.Value.NominatorId, NomineeId = result.Value.NomineeId });
+            return Ok(new { NominatorId = result.Value.NominatorId, NomineeId = result.Value.NomineeId, CampaignName=result.Value.Campaigns.CampaignName });
         }
 
 

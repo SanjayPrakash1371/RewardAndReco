@@ -11,6 +11,7 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin,Moderator")]*/
     public class CampaignsController : ControllerBase
     {
 
@@ -86,13 +87,18 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
             
 
 
-           var email = BackgroundJob.Schedule(() => emailTestService.SendAllMailId(mails,res.Value.CampaignName, res.Value.RewardTypes.RewardTypes), new DateTime(yy, mm, dd, 23, 00, 00));
-                return Ok( new { mails , res.Value, sd, dd,mm,yy});
+           var email = BackgroundJob.Schedule(() => emailTestService.SendAllMailId(mails,res.Value.CampaignName, res.Value.RewardTypes.RewardTypes), new DateTime(yy, mm, dd, 13, 00, 00));
+                return Ok( new { Status="Added",mails , res.Value, sd, dd,mm,yy});
         }
         [HttpPut]
         public async Task<ActionResult<Campaigns>> editCampaings(RequestUpdateCampaign requestUpdateCampaign)
         {
             var res = await CampaignServices.updateCampaign(requestUpdateCampaign);
+
+            if (res == null)
+            {
+                return BadRequest("Campaign Not FOund!🥵🥵🥵");
+            }
             return Ok(res.Value);
         }
 
@@ -101,16 +107,16 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<Campaigns>> deleteCampaign([FromRoute] int campId)
+        public async Task<ActionResult<Campaigns>> deleteCampaign([FromRoute] int id)
         {
-            var result= await  CampaignServices.deleteCampaign(campId);
+            var result= await  CampaignServices.deleteCampaign(id);
 
 
             if(result==null)
             {
-                return BadRequest("Campaign Not Present");
+                return BadRequest("Campaign Not Present \U0001f975\U0001f975\U0001f975");
             }
-            return Ok(result);
+            return Ok(new { result.Value});
         }
         [HttpPost]
         [Route("PostNomination")]
@@ -120,7 +126,7 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 
             if (campaigns == null)
             {
-                return BadRequest("No Campaign Exist");
+                return BadRequest("No Campaign Exist 😡😡😡");
             }
 
             if(campaigns.RewardId==1)
@@ -135,7 +141,7 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 
              
                 var result = await OtherRewardsServices.addNomination(requestNomination);
-                return Ok(result);
+                return Ok(result.Value);
             }
         }
 

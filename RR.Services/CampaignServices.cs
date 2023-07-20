@@ -29,7 +29,11 @@ namespace RR.Services
         }
         public async Task<ActionResult<IEnumerable<Campaigns>>> GetCampaign()
         {
-            var result = await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).ToListAsync();
+
+            
+            var result= await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).ToListAsync();
+            
+
 
           //  result.ForEach(x => x.RewardTypes = dataBaseAccess.RewardType.FirstOrDefault(y => y.Id == x.RewardId));
 
@@ -64,6 +68,10 @@ namespace RR.Services
         {
             Campaigns campaign = await dataBaseAccess.Campaigns.FirstOrDefaultAsync(x => x.Id == requestUpdateCampaign.CampaignId);
 
+            if(campaign == null)
+            {
+                return null;
+            }
             campaign.StartDate = requestUpdateCampaign.StartDate;
             campaign.votingDate = requestUpdateCampaign.VotingDate;
             campaign.EndDate = requestUpdateCampaign.EndDate;
@@ -112,13 +120,6 @@ namespace RR.Services
         {
             // Peer
 
-            List<PeerToPeerResults> peerToPeerResults = await dataBaseAccess.PeerToPeerResults.Where(x => x.campaigns.Id == campId).ToListAsync();
-            foreach (var peerToPeerResult in peerToPeerResults)
-            {
-                dataBaseAccess.PeerToPeerResults.Remove(peerToPeerResult);
-            }
-            await dataBaseAccess.SaveChangesAsync();
-
             List<PeerToPeer> peerToPeers = await dataBaseAccess.PeerToPeer.Include(x => x.PeerToPeerResults).Where(x => x.Campaigns.Id == campId).ToListAsync();
             foreach (var peerToPeer in peerToPeers)
             {
@@ -127,6 +128,16 @@ namespace RR.Services
 
 
             }
+            await dataBaseAccess.SaveChangesAsync();
+
+            List<PeerToPeerResults> peerToPeerResults = await dataBaseAccess.PeerToPeerResults.Where(x => x.campaigns.Id == campId).ToListAsync();
+            foreach (var peerToPeerResult in peerToPeerResults)
+            {
+                dataBaseAccess.PeerToPeerResults.Remove(peerToPeerResult);
+            }
+           
+
+           
             await dataBaseAccess.SaveChangesAsync();
 
 
@@ -208,6 +219,15 @@ namespace RR.Services
 
 
         }
+        
+
+        
+
+
+
+
+
+
         // Not Working
         public async Task<IActionResult> getCampaignDetailsByCampId(int campId ,int rewardId)
         {

@@ -8,6 +8,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin,Moderator,Lead")]*/
     public class OtherRewardsController : ControllerBase
     {
 
@@ -94,6 +95,10 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
         [Route("AddNomination")]
         public async Task<ActionResult<OtherRewards>> AddNomination(RequestNomination requestOtherRewards)
         {
+            if(requestOtherRewards.NominatorId.Equals(requestOtherRewards.NomineeId))
+            {
+                return BadRequest("You can nominate Yourself");
+            }
             var result = await OtherRewardsServices.addNomination(requestOtherRewards);
 
             return Ok(result.Value);

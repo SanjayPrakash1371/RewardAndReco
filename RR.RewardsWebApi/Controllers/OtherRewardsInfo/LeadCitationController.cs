@@ -8,6 +8,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class LeadCitationController:ControllerBase
     {
          private readonly DataBaseAccess dataBaseAccess;
@@ -20,7 +21,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
 
         [HttpGet]
-
+        /* [Authorize(Roles = "Admin,Moderator,Lead")]*/
         public async Task<ActionResult<IEnumerable<LeadCitation>>> GetLeadCitation()
         {
              var result= await dataBaseAccess.LeadCitation.Include(r=>r.LeadCitationReplies).ToListAsync();
@@ -66,6 +67,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
         [HttpGet]
         [Route("{NominatorId}/{CampaignId}")]
+        /* [Authorize(Roles = "Admin,Moderator,Lead")]*/
         public async Task<ActionResult<IEnumerable<LeadCitation>>> Get([FromRoute] string NominatorId, int CampaignId)
         {
             /*var query = (from a in dataBaseAccess.LeadCitation

@@ -9,6 +9,7 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin")]*/
     public class AwardController : ControllerBase
     {
 

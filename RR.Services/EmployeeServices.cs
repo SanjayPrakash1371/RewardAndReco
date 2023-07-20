@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RR.DataBaseConnect;
 using RR.Models.EmployeeInfo;
+using RR.Models.OtherRewardsInfo;
+using RR.Models.PeerToPeerInfo;
 using RR.Services.RequestClasses;
 
 namespace RR.Services
@@ -213,9 +215,62 @@ namespace RR.Services
             }
         }
 
+        public async Task<ActionResult<NominationsOfEmployee>> getAllNominations(string nominatorId)
+        {
+            NominationsOfEmployee nominationsOfEmployee = new NominationsOfEmployee();
+            nominationsOfEmployee.nominatorId = nominatorId;
+
+            List<PeerToPeer> peers = new List<PeerToPeer>();
+
+            await dataBaseAccess.PeerToPeer.Include(x=>x.Campaigns).Include(x=>x.Employee).Where(x => x.NominatorId.Equals(nominatorId)).ForEachAsync(x =>
+            {
+                peers.Add(x);
+            });
+
+            List<OtherRewards> otherRewards = new List<OtherRewards>();
+
+            await dataBaseAccess.OtherRewards.Include(x=>x.Campaigns).Include(x=>x.Employee).Include(x=>x.LeadCitation).ThenInclude(x=>x.LeadCitationReplies).Where(x => x.NominatorId.Equals(nominatorId)).ForEachAsync(x =>
+            {
+                otherRewards.Add(x);
+            });
+
+            nominationsOfEmployee.peerToPeers = peers;
+            nominationsOfEmployee.OtherRewards = otherRewards;
+
+            return nominationsOfEmployee;
+
+
+        }
+
+
         // delete Employee
         public async Task<ActionResult<Employee>> deleteEmployee(string employeeId)
         {
+
+
+            List<PeerToPeer> peerToPeers = 
+                await dataBaseAccess.PeerToPeer
+                .Include(x=>x.PeerToPeerResults).Where(x=>x.Employee.EmployeeId.Equals(employeeId)||x.NominatorId.Equals(employeeId)||x.NomineeId.Equals(employeeId))
+                .ToListAsync();
+
+            List<OtherRewards> otherRewards = await dataBaseAccess.OtherRewards.Include(x=>x.Employee).Include(x=>x.Campaigns).Include(x=>x.LeadCitation)
+                .ThenInclude(x=>x.LeadCitationReplies).Where(x=>x.Employee.EmployeeId.Equals(employeeId)).ToListAsync();
+
+
+
+
+            /*List<OtherRewards> otherRewards = await dataBaseAccess.OtherRewards.Include(x=>x.Employee)
+                .Include(x=>x.Campaigns).Include(x=>)*/
+
+
+
+
+
+
+
+
+
+
             Employee employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(x=>x.EmployeeId.Equals(employeeId));   
 
 

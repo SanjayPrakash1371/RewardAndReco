@@ -9,6 +9,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin")]*/
     public class AddRoleToEmployeeController : ControllerBase
     {
 

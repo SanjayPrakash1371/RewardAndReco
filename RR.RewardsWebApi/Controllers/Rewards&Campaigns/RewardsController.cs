@@ -7,6 +7,7 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin,Moderator")]*/
     public class RewardsController:ControllerBase
     {
         private readonly DataBaseAccess dataBaseAccess;

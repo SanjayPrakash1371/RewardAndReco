@@ -9,7 +9,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+    /* [Authorize(Roles = "Admin")]*/
     public class EmployeeController : ControllerBase
     {
         public EmployeeServices employeeServices;
@@ -20,7 +20,7 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
         }
 
         [HttpGet]
-       /* [Authorize(Roles = "Admin,Moderator")]*/
+      
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         {
 
@@ -65,6 +65,33 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
             }
 
             return Ok( new { Name=result.Value.Name , Email= result.Value.EmailId, EmployeeId = result.Value.EmployeeId});
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<Employee>> getEmployeeById(string id)
+        {
+            var result = await employeeServices.getEmployeeById(id);
+
+            if(result==null )
+            {
+                return BadRequest("Value Not Found");
+            }
+
+            return result.Value;
+        }
+
+        [HttpGet]
+        [Route("getAllNominations/{EmpId}")]
+
+        public async Task<ActionResult<NominationsOfEmployee>> getAllNominations(string EmpId)
+        {
+            var result= await employeeServices.getAllNominations(EmpId);
+
+            if(result==null)
+            {
+                return BadRequest("No nominations raa");
+            }
+            return result.Value;
         }
         /*[HttpDelete]
         [Route("{EmployeeId}")]

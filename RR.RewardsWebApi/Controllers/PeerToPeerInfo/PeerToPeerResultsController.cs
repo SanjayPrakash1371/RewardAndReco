@@ -6,6 +6,7 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin,Moderator,Lead,User")]*/
     public class PeerToPeerResultsController:ControllerBase
     {
         private readonly DataBaseAccess dataBaseAccess;

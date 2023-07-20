@@ -8,6 +8,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 {
     [Route("api/[controller]")]
     [ApiController]
+    /* [Authorize(Roles = "Admin,Moderator,Lead")]*/
     public class LeadCitationRepliesController:ControllerBase
     {
         public OtherRewardsServices OtherRewardsServices;
@@ -22,7 +23,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
         {
             var result = await OtherRewardsServices.AddReply(tempreplies);
 
-            return Ok(result);
+            return Ok(new {result.Value.ReplierId, result.Value.ReplyCitation});
         }
     }
 }
