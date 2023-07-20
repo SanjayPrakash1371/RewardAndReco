@@ -63,7 +63,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
         }
 
         [HttpPost]
-        [Route("Sample")]
+        [Route("GetNomineesListWithStars")]
         public async Task<ActionResult<IEnumerable<NomineesList>>>checkIfAlreadyVoted(CheckVoted checkvote)
         {
             HashSet<NomineesList> votedIds = new HashSet<NomineesList>();
