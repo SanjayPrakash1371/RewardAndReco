@@ -27,26 +27,52 @@ namespace RR.Services
             this.dataBaseAccess = dataBaseAccess;
             this.PeerToPeerServices = new PeerToPeerServices();
         }
-        public async Task<ActionResult<IEnumerable<Campaigns>>> GetCampaign()
+        public async Task<ActionResult<IEnumerable<CampaignDetails>>> GetCampaign()
         {
 
             
-            var result= await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).ToListAsync();
+           // var result= await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).ToListAsync();
 
 
-            List<CampaignDetails> list = new List<CampaignDetails>();
-             List<Campaigns> l= new List<Campaigns>();
+            var check= await dataBaseAccess.Campaigns.Include(x => x.RewardTypes).ToListAsync();
+
+            List<CampaignDetails> list= new List<CampaignDetails>();    
+            check.ForEach(async x => {
+
+                CampaignDetails campaignDetails = new CampaignDetails();
+
+                if(x.RewardTypes.Id==1)
+                {
+                    var count =  dataBaseAccess.PeerToPeer.Where(y => y.CampaignId == x.Id).ToList().Count();
+
+                    campaignDetails.countOfNominations = count;
+                    campaignDetails.Campaigns = x;
+                    list.Add(campaignDetails);
+
+                    
+                }
+                else if(x.RewardTypes.Id==2)
+                {
+                    var count=  dataBaseAccess.OtherRewards.Where(o=>o.Campaigns.Id ==x.Id).ToList().Count();
+                    campaignDetails.countOfNominations= count;
+                    campaignDetails.Campaigns = x;
+
+                    list.Add(campaignDetails);
+                }
+                
+
             
-          
             
-
-
-          //  result.ForEach(x => x.RewardTypes = dataBaseAccess.RewardType.FirstOrDefault(y => y.Id == x.RewardId));
-
             
+            });
 
 
-            return result;
+            //  result.ForEach(x => x.RewardTypes = dataBaseAccess.RewardType.FirstOrDefault(y => y.Id == x.RewardId));
+
+
+
+
+            return list;
         }
 
         

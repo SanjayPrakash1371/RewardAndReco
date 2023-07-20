@@ -37,22 +37,15 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Campaigns>>> GetCampaign()
+        [Route("GetCampaignsAlongWithCoubtOfNominations")]
+        public async Task<ActionResult<IEnumerable<CampaignDetails>>> GetCampaign()
         {
 
             var res = await CampaignServices.GetCampaign();
 
-            /*Dictionary<Campaigns,int> keyValuePairs = new Dictionary<Campaigns, int>();
-            List<CampaignDetails> list = new List<CampaignDetails>();
-            var r= await databaseAccess.PeerToPeer.GroupBy(x=>x.CampaignId).Select(x=> new
-            {
-                RewardId =x.First().Campaigns.RewardTypes.Id,
-                CampaignId=x.First().CampaignId,
-                Count=x.ToList().Count,
+                    
 
-            }).ToListAsync();*/
-
-            return Ok(res);
+         return Ok(res.Value);
             
 
         }
@@ -147,7 +140,7 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
                 
                 var result = await PeerToPeerServices.AddPeerToPeerNominees(requestNomination);
 
-                return Ok(result);
+                return Ok(result.Value);
             }
             else
             {
