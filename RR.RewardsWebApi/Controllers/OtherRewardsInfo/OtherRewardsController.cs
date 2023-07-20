@@ -55,6 +55,7 @@ namespace RR.RewardsWebApi.Controllers.OtherRewardsInfo
 
             return Ok(res.Value.Select(x => new
             {
+                IdOfNomination = x.Id,
                 Campaigns = x.Campaigns.CampaignName,
                 CampaignId = x.CampaignId,
                 RewardType = x.Campaigns.RewardTypes.RewardTypes,

@@ -16,7 +16,7 @@ namespace RR.Services.RequestClasses
         
         public string? AwardCategory { get; set; }
 
-        public int? Month { get; set; }
+        public string? Month { get; set; }
 
         public string? Citation { get; set; }
     }

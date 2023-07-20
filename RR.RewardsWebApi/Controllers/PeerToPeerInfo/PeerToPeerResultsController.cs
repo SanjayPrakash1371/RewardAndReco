@@ -12,12 +12,12 @@ namespace RR.RewardsWebApi.Controllers.PeerToPeerInfo
         public PeerToPeerResultsController(DataBaseAccess dataBaseAccess) { this.dataBaseAccess = dataBaseAccess; }
 
         [HttpGet]
-        [Route("{requiredNoOfWinners}")]
+        [Route("PeerToPeerResults/{requiredNoOfWinners}/{campId}")]
 
-        public async Task<ActionResult<IEnumerable<PeerToPeerResults>>> GetResult([FromRoute] int requiredNoOfWinners)
+        public async Task<ActionResult<IEnumerable<PeerToPeerResults>>> GetResult([FromRoute] int requiredNoOfWinners,int campId)
         {
 
-            var arr = dataBaseAccess.PeerToPeerResults.GroupBy(p => p.NomineeId);
+            var arr = dataBaseAccess.PeerToPeerResults.Where(x => x.campaigns.Id == campId).GroupBy(p => p.NomineeId);
 
             var result = (from l in arr select new { Id = l.Key, CountOfNominations = l.ToList().Count() })
                 .OrderByDescending(x => x.CountOfNominations).Take(requiredNoOfWinners);

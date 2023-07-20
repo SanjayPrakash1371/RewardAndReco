@@ -25,7 +25,7 @@ namespace RR.Models.OtherRewardsInfo
 
      
 
-        public int Month { get; set; }
+        public string Month { get; set; }
 
         [ForeignKey("EmployeeId")]
         public Employee? Employee { get; set; }

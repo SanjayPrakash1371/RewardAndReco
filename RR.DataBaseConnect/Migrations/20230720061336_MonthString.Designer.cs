@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RR.DataBaseConnect;
 
@@ -11,9 +12,11 @@ using RR.DataBaseConnect;
 namespace RR.DataBaseConnect.Migrations
 {
     [DbContext(typeof(DataBaseAccess))]
-    partial class DataBaseAccessModelSnapshot : ModelSnapshot
+    [Migration("20230720061336_MonthString")]
+    partial class MonthString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
