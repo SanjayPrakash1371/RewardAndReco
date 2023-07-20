@@ -32,6 +32,12 @@ namespace RR.Services
 
             
             var result= await dataBaseAccess.Campaigns.Include(x=>x.RewardTypes).ToListAsync();
+
+
+            List<CampaignDetails> list = new List<CampaignDetails>();
+             List<Campaigns> l= new List<Campaigns>();
+            
+          
             
 
 

@@ -1,6 +1,7 @@
 ﻿using BCrypt.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using RR.DataBaseConnect;
 using RR.Models.EmployeeInfo;
 using RR.Models.OtherRewardsInfo;
@@ -250,41 +251,116 @@ namespace RR.Services
 
             List<PeerToPeer> peerToPeers = 
                 await dataBaseAccess.PeerToPeer
-                .Include(x=>x.PeerToPeerResults).Where(x=>x.Employee.EmployeeId.Equals(employeeId)||x.NominatorId.Equals(employeeId)||x.NomineeId.Equals(employeeId))
+                .Include(x=>x.PeerToPeerResults).Where(x=>x.NominatorId.Equals(employeeId)||x.NomineeId.Equals(employeeId))
                 .ToListAsync();
 
+            foreach(var peerToPeer in peerToPeers)
+            {
+                 dataBaseAccess.PeerToPeer.Remove(peerToPeer);
+            }
+
+            await dataBaseAccess.SaveChangesAsync();
+            //
+
+            List<PeerToPeerResults> peerToPeerResults = await dataBaseAccess.PeerToPeerResults
+                .Where(x=>x.NominatorId.Equals(employeeId)||x.NomineeId.Equals(employeeId)).ToListAsync();
+
+            foreach (var peerToPeer in peerToPeerResults)
+            {
+                dataBaseAccess.PeerToPeerResults.Remove(peerToPeer);
+
+            }
+
+            await dataBaseAccess.SaveChangesAsync();
+
+            //
+
+            List<OtherRewardResults> otherRewardResults = await dataBaseAccess.OtherRewardResults
+                .Where(x=>x.NomineeId.Equals(employeeId)||x.NominatorId.Equals(employeeId)||x.VoterId.Equals(employeeId)).ToListAsync();
+
+            foreach(var otherReward in otherRewardResults)
+            {
+                dataBaseAccess.OtherRewardResults.Remove(otherReward);
+            }
+            await dataBaseAccess.SaveChangesAsync();
+
             List<OtherRewards> otherRewards = await dataBaseAccess.OtherRewards.Include(x=>x.Employee).Include(x=>x.Campaigns).Include(x=>x.LeadCitation)
-                .ThenInclude(x=>x.LeadCitationReplies).Where(x=>x.Employee.EmployeeId.Equals(employeeId)).ToListAsync();
+                .ThenInclude(x=>x.LeadCitationReplies).Where(x=>x.Employee.EmployeeId.Equals(employeeId)||x.NominatorId.Equals(employeeId)||x.NomineeId.Equals(employeeId)).ToListAsync();
+
+            foreach(var otherReward in otherRewards)
+            {
+                dataBaseAccess.OtherRewards.Remove(otherReward);
+            }
+
+            await dataBaseAccess.SaveChangesAsync();
+
+            // 
+            List<LeadCitationReplies> leadCitationReplies = await dataBaseAccess.LeadCitationReplies
+                .Where(x => x.NominatorId.Equals(employeeId)|| x.ReplierId.Equals(employeeId)).ToListAsync();
+
+            foreach (var lead in leadCitationReplies)
+            {
+                dataBaseAccess.LeadCitationReplies.Remove(lead);
+            }
+            await dataBaseAccess.SaveChangesAsync();
 
 
 
+            //
 
+            List<LeadCitation> leadCitations = await dataBaseAccess.LeadCitation.Where(x=>x.NominatorId.Equals(employeeId)).ToListAsync();
+            foreach(var lead in leadCitations)
+            {
+                dataBaseAccess.LeadCitation.Remove(lead);
+            }
+            //
+
+
+            
+            List<EmployeeRoles> employeeRoles = await dataBaseAccess.EmployeeRoles.Where(x=>x.EmpId.Equals(employeeId)).ToListAsync();
+
+
+            foreach(var empRoles in employeeRoles)
+            {
+                dataBaseAccess.Remove(empRoles);
+            }
+            await dataBaseAccess.SaveChangesAsync();
+
+            //
+            Employee employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(x => x.EmployeeId.Equals(employeeId));
+
+            if(employee==null)
+            {
+                return null;
+            }
+
+            dataBaseAccess.Employee.Remove(employee);
+            await dataBaseAccess.SaveChangesAsync();
+            //
+            UserNamePassword userNamePassword = await dataBaseAccess.UserNamePassword.FirstOrDefaultAsync(x=>x.employeeId.Equals(employeeId));  
             /*List<OtherRewards> otherRewards = await dataBaseAccess.OtherRewards.Include(x=>x.Employee)
                 .Include(x=>x.Campaigns).Include(x=>)*/
 
+             dataBaseAccess.UserNamePassword.Remove(userNamePassword);
+
+            await dataBaseAccess.SaveChangesAsync();
 
 
 
 
 
-
-
-
-
-            Employee employee = await dataBaseAccess.Employee.FirstOrDefaultAsync(x=>x.EmployeeId.Equals(employeeId));   
 
 
             if (employee == null)
             {
                 return null;
             }
-            else
-            {
-                dataBaseAccess.Employee.Remove(employee);
-                await dataBaseAccess.SaveChangesAsync();
 
-                return employee;
-            }
+
+            // Employee emp = await dataBaseAccess.Employee.FirstOrDefaultAsync(x=>x.EmployeeId.Equals(employeeId));   
+
+
+            return employee;
         }
 
         public async Task<ActionResult<Employee>> getEmployeeById(string employeeId)

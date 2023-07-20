@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RR.DataBaseConnect;
 using RR.Models;
+using RR.Models.PeerToPeerInfo;
 using RR.Models.Rewards_Campaigns;
 using RR.Services;
 using RR.Services.RequestClasses;
@@ -40,7 +41,19 @@ namespace RR.RewardsWebApi.Controllers.Rewards_Campaigns
         {
 
             var res = await CampaignServices.GetCampaign();
-            return Ok(res.Value);
+
+            /*Dictionary<Campaigns,int> keyValuePairs = new Dictionary<Campaigns, int>();
+            List<CampaignDetails> list = new List<CampaignDetails>();
+            var r= await databaseAccess.PeerToPeer.GroupBy(x=>x.CampaignId).Select(x=> new
+            {
+                RewardId =x.First().Campaigns.RewardTypes.Id,
+                CampaignId=x.First().CampaignId,
+                Count=x.ToList().Count,
+
+            }).ToListAsync();*/
+
+            return Ok(res);
+            
 
         }
 

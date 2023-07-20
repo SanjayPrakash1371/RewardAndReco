@@ -93,15 +93,20 @@ namespace RR.RewardsWebApi.Controllers.EmployeeInfo
             }
             return result.Value;
         }
-        /*[HttpDelete]
+        [HttpDelete]
         [Route("{EmployeeId}")]
 
         public async Task<ActionResult<Employee>> deleteEmployee([FromRoute] string EmployeeId)
         {
-           var result= await employeeServices.deleteEmployee(EmployeeId);
+            var result = await employeeServices.deleteEmployee(EmployeeId);
+
+            if(result==null)
+            {
+                return BadRequest("Not exits");
+            }
             return result.Value;
 
-        }*/
+        }
     } 
 }
 
